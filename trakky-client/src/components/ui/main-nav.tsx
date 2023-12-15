@@ -4,6 +4,14 @@ import React from "react";
 import { demoMode } from "@/constants.ts";
 import { Github } from "lucide-react";
 
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
+
 interface Links {
   href: string;
   label: string;
@@ -19,6 +27,12 @@ export function MainNav({
     { href: "/dashboard", label: "Dashboard" },
   ];
 
+  const editLinks: Links[] = [
+    { href: "/users", label: "Users" },
+    { href: "/budgets", label: "Budgets" },
+    { href: "/types", label: "Types" },
+  ];
+
   return (
     <>
       <div className="sticky top-0 bg-gray-950 z-50">
@@ -30,7 +44,7 @@ export function MainNav({
                   {links.map((link, index) => {
                     return (
                       <a
-                        key={index}
+                        key={`link-${index}`}
                         tabIndex={index}
                         href={link.href}
                         className={
@@ -43,6 +57,26 @@ export function MainNav({
                       </a>
                     );
                   })}
+                  <NavigationMenu>
+                    <NavigationMenuList>
+                      <NavigationMenuItem>
+                        <NavigationMenuTrigger className="text-sm font-medium text-muted-foreground transition-colors hover:bg-transparent hover:text-slate-600 focus:outline-none">
+                          Edit
+                        </NavigationMenuTrigger>
+                        <NavigationMenuContent>
+                          <ul className="flex flex-col text-left p-2 w-[100px] z-50">
+                            {editLinks.map((link, index) => {
+                              return (
+                                <a key={`edit-${index}`} href={link.href} className="flex flex-col p-2 cursor-pointer text-sm font-medium text-muted-foreground transition-colors hover:bg-accent/50 h-full w-full rounded hover:text-slate-600 focus:outline-none">
+                                  {link.label}
+                                </a>
+                              )
+                            }) }
+                          </ul>
+                        </NavigationMenuContent>
+                      </NavigationMenuItem>
+                    </NavigationMenuList>
+                  </NavigationMenu>
                   {demoMode && (
                     <div className="text-sm font-medium text-destructive">
                       Demo mode
