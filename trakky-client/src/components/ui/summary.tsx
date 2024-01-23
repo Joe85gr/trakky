@@ -76,8 +76,6 @@ export function Summary<TData>({
     .rows.map((r) => parseFloat(r.getValue("amount")))
     .reduce((total, currentAmount) => total + currentAmount, 0);
 
-  console.log(totalsPerYear)
-
   const currentDate = new Date();
   const lastYearCurrentMonth = new Date(currentDate.getFullYear() - 1, currentDate.getMonth()); // Calculate last year's current month
 
@@ -86,7 +84,6 @@ export function Summary<TData>({
       ? getPreviousYearTotalSoFar(totalsPerYear, lastYearCurrentMonth)
       : getPreviousYearTotal(totalsPerYear, selectedYear);
 
-  console.log("previousYearTotal", previousYearTotal)
   const ownerBalances: OwnerBalance[] = [];
 
   table
