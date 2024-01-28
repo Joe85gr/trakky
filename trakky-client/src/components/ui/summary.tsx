@@ -6,9 +6,9 @@ import { Tabs, TabsContent } from "@/components/ui/tabs.tsx";
 import { FadeLeft } from "@/components/animations/fade.tsx";
 import React from "react";
 import {
-  calculateChange,
+  calculateChangePercentage,
   getPreviousYearTotal,
-  getPreviousYearPartialTotal,
+  getYearPartialTotal,
 } from "@/lib/calculators.ts";
 import { getPercentageChangeText } from "@/lib/formatter.ts";
 
@@ -87,10 +87,10 @@ export function Summary<TData>({
 
   const previousYearTotal =
     selectedThisYear
-      ? getPreviousYearPartialTotal(totalsPerYear, lastYearCurrentMonth)
+      ? getYearPartialTotal(totalsPerYear, lastYearCurrentMonth)
       : getPreviousYearTotal(totalsPerYear, selectedYear);
 
-  const change = calculateChange(totalAmount, previousYearTotal);
+  const change = calculateChangePercentage(totalAmount, previousYearTotal);
   let changePercentage = getPercentageChangeText(change, selectedThisYear, selectedYear, lastYearCurrentMonth);
 
   const ownerBalances: OwnerBalance[] = [];
