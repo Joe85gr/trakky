@@ -15,7 +15,9 @@ export async function FetchPayments(): Promise<Payment[]> {
 
   const { data, error } = await baseApiCall<Payment[]>({ config, demoModeDataGenerator: mockPayments });
 
-  console.log("FetchPayments:", error);
+  if(error) {
+    console.log("Error while getting payments:", error);
+  }
 
   return data ?? [];
 }
@@ -28,7 +30,7 @@ export async function AddPayments(payments: Payment[]): Promise<boolean> {
   const { data, error } = await baseApiCall<boolean>({ config, demoModeDataGenerator: () => true });
 
   if(error) {
-    console.log("AddPayments:", error);
+    console.log("Error while editing payments:", error);
   }
 
   return data ?? false;
@@ -50,7 +52,7 @@ export async function UploadPayments(file: File): Promise<null | string> {
   const { data, error } = await baseApiCall<boolean>({ config, demoModeDataGenerator: () => true });
 
   if(error) {
-    console.log("UploadPayments:", error);
+    console.log("Error while uploading payments:", error);
   }
 
   return data ? "" : error?.error ?? "Unknown error";
@@ -63,8 +65,9 @@ export async function EditPayment(payment: Payment): Promise<boolean> {
   const { data, error } = await baseApiCall<boolean>({ config, demoModeDataGenerator: () => true });
 
   if(error) {
-    console.log("EditPayment:", error);
+    console.log("Error while editing payments:", error);
   }
+
   return data ?? false;
 }
 
@@ -75,7 +78,7 @@ export async function DeletePayments(ids: number[]): Promise<boolean> {
   const { data, error } = await baseApiCall<boolean>({ config, demoModeDataGenerator: () => true });
 
   if(error) {
-    console.log("DeletePayments:", error);
+    console.log("Error while delete payments:", error);
   }
 
   return data ?? false;

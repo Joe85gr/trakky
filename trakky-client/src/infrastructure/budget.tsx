@@ -16,7 +16,9 @@ export async function fetchBudgets(): Promise<Budget[]> {
 
   const { data, error } = await baseApiCall<Budget[]>({ config, demoModeDataGenerator: makeBudgets });
 
-  console.log("fetchBudgets:", error);
+  if(error) {
+    console.log("Error while getting budgets:", error);
+  }
 
   return data ?? [];
 
@@ -29,7 +31,9 @@ export async function AddBudgets(budgets: Budget[]): Promise<boolean> {
 
   const { data, error } = await baseApiCall<boolean>({ config, demoModeDataGenerator: () => true });
 
-  console.log("AddBudgets:", error);
+  if(error) {
+    console.log("Error while adding budgets:", error);
+  }
 
   return data ?? false;
 }
@@ -40,7 +44,9 @@ export async function EditBudget(budget: Budget): Promise<boolean> {
 
   const { data, error } = await baseApiCall<boolean>({ config, demoModeDataGenerator: () => true });
 
-  console.log("EditBudget:", error);
+  if(error) {
+    console.log("Error while editing budget:", error);
+  }
 
   return data ?? false;
 }
@@ -51,7 +57,9 @@ export async function DeleteBudgets(ids: number[]): Promise<boolean> {
 
   const { data, error } = await baseApiCall<boolean>({ config, demoModeDataGenerator: () => true });
 
-  console.log("DeleteBudgets:", error);
+  if(error) {
+    console.log("Error while deleting budgets:", error);
+  }
 
   return data ?? false;
 }

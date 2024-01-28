@@ -21,7 +21,9 @@ export async function fetchBackup(): Promise<Backup | null> {
 
   const { data, error } = await baseApiCall<Backup>({ config, demoModeDataGenerator: mockBackup });
 
-  console.log("fetchBackup:", error);
+  if(error) {
+    console.log("Error while getting backup:", error);
+  }
 
   return data ?? null;
 }

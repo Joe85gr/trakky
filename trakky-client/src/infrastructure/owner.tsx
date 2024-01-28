@@ -15,7 +15,9 @@ export async function fetchOwners(): Promise<Owner[]> {
 
   const { data, error } = await baseApiCall<Owner[]>({ config, demoModeDataGenerator: makeOwners });
 
-  console.log("fetchOwners:", data, error);
+  if(error) {
+    console.log("Error while getting owners:", error);
+  }
 
   return data ?? [];
 }
@@ -27,7 +29,9 @@ export async function AddOwners(owners: Owner[]): Promise<boolean> {
 
   const { data, error } = await baseApiCall<boolean>({ config, demoModeDataGenerator: () => true });
 
-  console.log("AddOwners:", data, error);
+  if(error) {
+    console.log("Error while adding owners:", error);
+  }
 
   return data ?? false;
 }
@@ -38,7 +42,9 @@ export async function EditOwner(owner: Owner): Promise<boolean> {
 
   const { data, error } = await baseApiCall<boolean>({ config, demoModeDataGenerator: () => true });
 
-  console.log("EditOwner:", data, error);
+  if(error) {
+    console.log("Error while editing owners:", error);
+  }
 
   return data ?? false;
 }
@@ -49,7 +55,9 @@ export async function DeleteOwners(ids: number[]): Promise<boolean> {
 
   const { data, error } = await baseApiCall<boolean>({ config, demoModeDataGenerator: () => true });
 
-  console.log("DeleteOwners:", data, error);
+  if(error) {
+    console.log("Error while getting owners:", error);
+  }
 
   return data ?? false;
 }

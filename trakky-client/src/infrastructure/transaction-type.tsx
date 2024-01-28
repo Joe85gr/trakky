@@ -11,7 +11,9 @@ export async function fetchTypes(): Promise<Type[]> {
 
   const { data, error } = await baseApiCall<Type[]>({ config, demoModeDataGenerator: makeTypes });
 
-  console.log("fetchTypes:", error);
+  if(error) {
+    console.log("Error while getting types:", error);
+  }
 
   return data ?? [];
 }
@@ -22,7 +24,9 @@ export async function AddTypes(types: Type[]): Promise<boolean> {
 
   const { data, error } = await baseApiCall<boolean>({ config });
 
-  console.log("AddTypes:", error);
+  if(error) {
+    console.log("Error while adding types:", error);
+  }
 
   return data ?? false;
 }
@@ -33,7 +37,9 @@ export async function DeleteTypes(ids: number[]): Promise<boolean> {
 
   const { data, error } = await baseApiCall<boolean>({ config });
 
-  console.log("DeleteTypes:", error);
+  if(error) {
+    console.log("Error while deleting types:", error);
+  }
 
   return data ?? false;
 }

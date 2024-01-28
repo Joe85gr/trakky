@@ -5,7 +5,9 @@ export async function serverIsDown() {
 
   const { data, error } = await baseApiCall<boolean>({ config, demoModeDataGenerator: () => false });
 
-  console.log("serverIsDown:", error);
+  if(error) {
+    console.log("Error while performing health check:", error);
+  }
 
   return !data ?? true;
 }
