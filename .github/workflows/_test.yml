@@ -11,7 +11,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Run Tests
+      - name: Run Client Tests
         run: |
+          cd trakky-client
           npm run build
           npm run test
