@@ -6,7 +6,7 @@ axios.defaults.headers.post["Content-Type"] = "application/json";
 
 export interface Budget {
   id: string;
-  date: Date;
+  date: string;
   budget: number;
   maxBudget: number;
 }
@@ -14,9 +14,9 @@ export interface Budget {
 export async function fetchBudgets(): Promise<Budget[]> {
   const config = makeBaseRequest("budgets", "GET")
 
-  const { data, error } = await baseApiCall<Budget[]>({ config, demoModeDataGenerator: makeBudgets });
+  const { data, error } = await baseApiCall<Budget[]>({ request: config, demoModeData: makeBudgets });
 
-  if(error) {
+  if (error) {
     console.log("Error while getting budgets:", error);
   }
 
@@ -29,9 +29,9 @@ export async function AddBudgets(budgets: Budget[]): Promise<boolean> {
   const config = makeBaseRequest("budgets", "POST")
   config.data = budgets;
 
-  const { data, error } = await baseApiCall<boolean>({ config, demoModeDataGenerator: () => true });
+  const { data, error } = await baseApiCall<boolean>({ request: config, demoModeData: () => true });
 
-  if(error) {
+  if (error) {
     console.log("Error while adding budgets:", error);
   }
 
@@ -39,12 +39,13 @@ export async function AddBudgets(budgets: Budget[]): Promise<boolean> {
 }
 
 export async function EditBudget(budget: Budget): Promise<boolean> {
-  const config = makeBaseRequest("budget", "PUT")
+  console.log("EditBudget infrastructure: ", budget);
+  const config = makeBaseRequest("budgets", "PUT")
   config.data = budget;
 
-  const { data, error } = await baseApiCall<boolean>({ config, demoModeDataGenerator: () => true });
+  const { data, error } = await baseApiCall<boolean>({ request: config, demoModeData: () => true });
 
-  if(error) {
+  if (error) {
     console.log("Error while editing budget:", error);
   }
 
@@ -55,9 +56,9 @@ export async function DeleteBudgets(ids: number[]): Promise<boolean> {
   const config = makeBaseRequest("budgets", "DELETE")
   config.data = ids;
 
-  const { data, error } = await baseApiCall<boolean>({ config, demoModeDataGenerator: () => true });
+  const { data, error } = await baseApiCall<boolean>({ request: config, demoModeData: () => true });
 
-  if(error) {
+  if (error) {
     console.log("Error while deleting budgets:", error);
   }
 

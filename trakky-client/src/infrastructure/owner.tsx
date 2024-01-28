@@ -13,9 +13,9 @@ export interface Owner {
 export async function fetchOwners(): Promise<Owner[]> {
   const config = makeBaseRequest("owners", "GET")
 
-  const { data, error } = await baseApiCall<Owner[]>({ config, demoModeDataGenerator: makeOwners });
+  const { data, error } = await baseApiCall<Owner[]>({ request: config, demoModeData: makeOwners });
 
-  if(error) {
+  if (error) {
     console.log("Error while getting owners:", error);
   }
 
@@ -27,9 +27,9 @@ export async function AddOwners(owners: Owner[]): Promise<boolean> {
   const config = makeBaseRequest("owners", "POST")
   config.data = owners;
 
-  const { data, error } = await baseApiCall<boolean>({ config, demoModeDataGenerator: () => true });
+  const { data, error } = await baseApiCall<boolean>({ request: config, demoModeData: () => true });
 
-  if(error) {
+  if (error) {
     console.log("Error while adding owners:", error);
   }
 
@@ -40,9 +40,9 @@ export async function EditOwner(owner: Owner): Promise<boolean> {
   const config = makeBaseRequest("owners", "PUT")
   config.data = owner;
 
-  const { data, error } = await baseApiCall<boolean>({ config, demoModeDataGenerator: () => true });
+  const { data, error } = await baseApiCall<boolean>({ request: config, demoModeData: () => true });
 
-  if(error) {
+  if (error) {
     console.log("Error while editing owners:", error);
   }
 
@@ -53,9 +53,9 @@ export async function DeleteOwners(ids: number[]): Promise<boolean> {
   const config = makeBaseRequest("owners", "DELETE")
   config.data = ids;
 
-  const { data, error } = await baseApiCall<boolean>({ config, demoModeDataGenerator: () => true });
+  const { data, error } = await baseApiCall<boolean>({ request: config, demoModeData: () => true });
 
-  if(error) {
+  if (error) {
     console.log("Error while getting owners:", error);
   }
 

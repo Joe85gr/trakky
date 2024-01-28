@@ -11,25 +11,27 @@ export const makeBaseRequest = (endpoint: string, method: string): AxiosRequestC
     url: `${serverUrl}/${endpoint}`,
     method,
     headers: {
-      "Content-Type": "application/json",
+      "content-type": "application/json",
     },
   };
 }
 
 export const baseApiCall = async <T>(options: {
-  config: AxiosRequestConfig;
-  demoModeDataGenerator?: () => T
+  request: AxiosRequestConfig;
+  demoModeData?: () => T
 }): Promise<ApiResponse<T>> => {
-  if(demoMode && options.demoModeDataGenerator) {
+  if(demoMode && options.demoModeData) {
     return {
-      data: options.demoModeDataGenerator(),
+      data: options.demoModeData(),
       error: null,
     };
   }
 
-  try {
-    const response: AxiosResponse = await axios(options.config);
+  console.log("options", options)
 
+  try {
+    const response: AxiosResponse = await axios(options.request);
+    console.log("response", response)
     const { data } = response;
 
     return {
@@ -37,6 +39,8 @@ export const baseApiCall = async <T>(options: {
       error: null,
     };
   } catch (error) {
+    console.log("error", error)
+
     if (axios.isAxiosError(error)) {
       const axiosError = error as AxiosError;
 

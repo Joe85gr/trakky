@@ -19,9 +19,9 @@ export interface Backup {
 export async function fetchBackup(): Promise<Backup | null> {
   const config = makeBaseRequest("backup", "GET")
 
-  const { data, error } = await baseApiCall<Backup>({ config, demoModeDataGenerator: mockBackup });
+  const { data, error } = await baseApiCall<Backup>({ request: config, demoModeData: mockBackup });
 
-  if(error) {
+  if (error) {
     console.log("Error while getting backup:", error);
   }
 
