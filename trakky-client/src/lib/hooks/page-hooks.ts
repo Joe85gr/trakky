@@ -53,7 +53,7 @@ export function useBudgetsData() {
 
   useEffect(() => {
     refreshData().then(() => {
-      console.log("Refreshed payments data");
+      console.log("Refreshed payments data.");
     });
   }, []);
 
