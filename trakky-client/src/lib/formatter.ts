@@ -9,7 +9,7 @@ export function formatDateMonth(date: Date): string {
   return new Date(date).toLocaleString('en-GB', {month: 'long' });
 }
 
-export function formatStringDate(date: string): string {
+export function formatToShortDate(date: string): string {
   return new Date(date).toLocaleString("en-GB", {
     dateStyle: "short",
   });
