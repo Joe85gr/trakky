@@ -1,48 +1,57 @@
 import { makeBudgets } from "@/lib/makeData.ts";
 import axios from "axios";
-import {
-  BaseFetchResultHandler,
-  BaseResultHandler,
-  HandleExceptionBoolean,
-  HandleResponseBoolean
-} from "@/infrastructure/base.tsx";
+import { baseApiCall, makeBaseRequest } from "@/infrastructure/base-api.ts";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 export interface Budget {
   id: string;
-  date: string;
+  date: Date;
   budget: number;
   maxBudget: number;
 }
 
-function mapBudgets<T>(data: any): T[] {
-  return data
-    .sort((p: Budget) => p.date)
-    .reverse()
-    .map((p: Budget) => {
-      return {
-        id: p.id,
-        date: p.date,
-        budget: p.budget,
-        maxBudget: p.maxBudget,
-      }
-    });
-}
-
 export async function fetchBudgets(): Promise<Budget[]> {
-  return await BaseFetchResultHandler<Budget>(makeBudgets, "budgets", mapBudgets);
+  const config = makeBaseRequest("budgets", "GET")
+
+  const { data, error } = await baseApiCall<Budget[]>({ config, demoModeDataGenerator: makeBudgets });
+
+  console.log("fetchBudgets:", error);
+
+  return data ?? [];
+
 }
 
 
 export async function AddBudgets(budgets: Budget[]): Promise<boolean> {
-  return await BaseResultHandler(axios.post, "budgets", budgets, HandleResponseBoolean, HandleExceptionBoolean, true);
+  const config = makeBaseRequest("budgets", "POST")
+  config.data = budgets;
+
+  const { data, error } = await baseApiCall<boolean>({ config, demoModeDataGenerator: () => true });
+
+  console.log("AddBudgets:", error);
+
+  return data ?? false;
 }
 
 export async function EditBudget(budget: Budget): Promise<boolean> {
-  return await BaseResultHandler(axios.put, "budget", budget, HandleResponseBoolean, HandleExceptionBoolean, true);
+  const config = makeBaseRequest("budget", "PUT")
+  config.data = budget;
+
+  const { data, error } = await baseApiCall<boolean>({ config, demoModeDataGenerator: () => true });
+
+  console.log("EditBudget:", error);
+
+  return data ?? false;
 }
 
 export async function DeleteBudgets(ids: number[]): Promise<boolean> {
-  return await BaseResultHandler(axios.delete, "budgets", {data: ids}, HandleResponseBoolean, HandleExceptionBoolean, true);
+  const config = makeBaseRequest("budgets", "DELETE")
+  config.data = ids;
+
+  const { data, error } = await baseApiCall<boolean>({ config, demoModeDataGenerator: () => true });
+
+  console.log("DeleteBudgets:", error);
+
+  return data ?? false;
 }

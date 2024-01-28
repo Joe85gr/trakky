@@ -46,7 +46,9 @@ export function useBudgetsData() {
   async function refreshData(flushBeforeRefresh: boolean = true) {
     if(flushBeforeRefresh) setBudgets([]);
 
-    const data = await fetchBudgets();
+    const data = await fetchBudgets()
+
+    console.log("fetchBudgets", data);
     setBudgets(data);
   }
 
