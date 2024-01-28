@@ -44,18 +44,16 @@ export const baseApiCall = async <T>(options: {
 
       const { response } = axiosError;
 
-      let message = "Could not connect to the server.";
-
-      if (response && response.statusText) {
-        message = response.statusText;
-      }
-
-      if (axiosError.message) {
-        message = axiosError.message;
-      }
+      let message: string;
 
       if (response && response.data && (response.data as AppError).error) {
         message = (response.data as AppError).error;
+      } else if (axiosError.message) {
+        message = axiosError.message;
+      } else if (response && response.statusText) {
+        message = response.statusText;
+      } else {
+        message = "Could not connect to the server.";
       }
 
       return {
