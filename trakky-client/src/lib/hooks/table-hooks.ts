@@ -26,7 +26,7 @@ import { demoMode } from "@/constants";
 import { Budget, DeleteBudgets } from "@/infrastructure/budget.tsx";
 import * as z from "zod";
 
-export function useExpensesTable({
+export function usePaymentsTable({
                             data,
                             selectedYear,
                             refreshData

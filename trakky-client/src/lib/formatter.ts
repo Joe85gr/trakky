@@ -15,6 +15,15 @@ export function formatToShortDate(date: string): string {
   });
 }
 
+export function formatToMonthYearDate(date: string): string {
+  return new Date(date).toLocaleString('en-GB',
+    {
+      month: 'short',
+      year: 'numeric',
+    });
+
+}
+
 export function isValidDate(date: string) {
   return !isNaN(Date.parse(date));
 }

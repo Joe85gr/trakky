@@ -2,7 +2,7 @@ import { CustomTable } from "@/components/ui/table/table.tsx";
 import { SubTitle, Text } from "@/components/ui/text.tsx";
 import { usePaymentData } from "@/lib/hooks/page-hooks.ts";
 import { YearSelection } from "@/components/ui/data-selector.tsx";
-import { useExpensesTable } from "@/lib/hooks/table-hooks.ts";
+import { usePaymentsTable } from "@/lib/hooks/table-hooks.ts";
 import { Payment } from "@/infrastructure/payment.tsx";
 import { useEffect, useState } from "react";
 import { ExpensesPieChart, UsersDashboard, ExpensesDashboard } from "@/app/dashboards/components/dashboards.tsx";
@@ -22,7 +22,7 @@ function DashboardPage() {
 
   const {
     table,
-  } = useExpensesTable({
+  } = usePaymentsTable({
     data: payments,
     selectedYear,
     refreshData,

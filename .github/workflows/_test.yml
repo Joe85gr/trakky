@@ -6,14 +6,13 @@ on:
 jobs:
   Test:
     runs-on: ubuntu-latest
-    container: node:19-alpine
-
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Run Client Tests
-        run: |
-          cd trakky-client
-          npm ci
-          npm run build
-          npm run test
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20.x"
+      - run: cd trakky-client
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: npm test

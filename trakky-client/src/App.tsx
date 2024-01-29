@@ -2,7 +2,7 @@ import { CustomTable } from "@/components/ui/table/table";
 import { Text } from "@/components/ui/text.tsx";
 import { usePaymentData } from "@/lib/hooks/page-hooks.ts";
 import { YearSelection } from "@/components/ui/data-selector.tsx";
-import { useExpensesTable } from "@/lib/hooks/table-hooks.ts";
+import { usePaymentsTable } from "@/lib/hooks/table-hooks.ts";
 import { Summary } from "@/components/ui/summary.tsx";
 import { useEffect } from "react";
 import { Containers } from "@/components/ui/containers.tsx";
@@ -26,7 +26,7 @@ export default function App() {
     table,
     onDeleteConfirmed,
     onRefresh,
-  } = useExpensesTable({
+  } = usePaymentsTable({
     data: payments,
     selectedYear,
     refreshData,
