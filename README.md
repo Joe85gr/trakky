@@ -6,6 +6,8 @@
 A personal, self-hosted, simple expenses tracker.
 Demo [here](https://trakky.pages.dev).
 
+Requires OpenId authentication backend (e.g. [Authentik](https://goauthentik.io/)).
+
 ## How to run with docker
 
 > [!NOTE]  
@@ -22,18 +24,22 @@ npx prisma migrate dev --name init
 ```
 This will initialise the database and create the necessary tables.
 
-Set and run the backend:
+Create a docker network:
 ```bash
-cd trakky-server
-docker build -t trakky-server .
-docker run -p 8999:8999 -e DATABASE_URL="mysql://USERNAME:PASSWORD@URL:PORT/expenses?schema=public" --name -e AUTH_USERINFO_URL=authentik_user_url -e ALLOWED_ORIGINS="http://localhost,http://some-url.localdomain" trakky-server -d trakky-server 
+docker network create trakky
 ```
 
-note: ALLOWED_ORIGINS must be comma separated. Defaults to http://localhost:5173
+Set and run the backend:
+```bash
+docker build -t trakky-server ./trakky-server
+
+docker run -p 8999:8999 --network trakky -e DATABASE_URL="mysql://USERNAME:PASSWORD@URL:PORT/expenses?schema=public" -e AUTH_USERINFO_URL=your_authentik_userinfo_url -e ALLOWED_ORIGINS="http://localhost,http://other-origin.com" --name trakky-server -d trakky-server 
+```
+note: ALLOWED_ORIGINS must be comma separated.
 
 Set and run the frontend:
 ```bash
-cd trakky-client
-docker build --build-arg OPENID_AUTH_CLIENT_ID=CLIENT_ID --build-arg OPENID_WELL_KNOWN_CONFIG_URL=OPENID_WELL_KNOWN_CONFIG_URL --build-arg SERVER_URL=TRAKKY_SERVER_URL -t trakky-client .
-docker run -p 5173:80 --name trakky -d trakky-client
+docker build --build-arg OPENID_AUTH_CLIENT_ID=authentik_oauth0_provider_client_id --build-arg OPENID_WELL_KNOWN_CONFIG_URL=authentik_openid_well_known_url --build-arg SERVER_URL=trakky-server-url  -t trakky-client ./trakky-client
+
+docker run -p 8997:80 --network trakky --name trakky -d trakky-client
 ```
