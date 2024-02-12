@@ -28,7 +28,9 @@ export async function openIdAuth(req: Request, res: Response, next: any) {
         return next();
       } 
     }
-  } catch { } 
+  } catch(e) {
+    console.log(e);
+   } 
 
   return res.status(401).send();
 }
