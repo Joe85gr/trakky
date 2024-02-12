@@ -18,7 +18,6 @@ import { Filter } from "@/components/ui/table/column-filter.tsx";
 import {
   colSize,
 } from "@/components/ui/table/columns.tsx";
-import { FadeUp } from "@/components/animations/fade.tsx";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -26,8 +25,11 @@ import {
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu.tsx";
 import { ChevronDown } from "lucide-react";
-import { ReactNode, useEffect, useState } from "react";
+import { memo, ReactNode, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button.tsx";
+import { SubTitle } from "@/components/ui/text.tsx";
+import { SubmittableInput } from "@/components/ui/input.tsx";
+import { DeleteDialog } from "@/components/ui/table/delete-popup.tsx";
 
 export interface CustomTableProps {
   table: TableType<any>;
@@ -37,12 +39,7 @@ export interface CustomTableProps {
   canHideRows?: boolean;
 }
 
-export function CustomTable({
-  tableProps,
-  ...props
-}: {
-  tableProps: CustomTableProps;
-}) {
+export const CustomTable = memo((tableProps: CustomTableProps) => {
   const [showTableBody, setShowTableBody] = useState<boolean>(!tableProps.filtersOnly);
 
   const activeColumnsKey = `${tableProps.page}_active_columns`;
@@ -85,10 +82,9 @@ export function CustomTable({
   }
 
   return (
-    <div {...props}>
+    <div>
       {
         <>
-          <FadeUp>
             {
               tableProps.tableActionMenu && (tableProps.tableActionMenu)
             }
@@ -120,7 +116,7 @@ export function CustomTable({
                                 {...{
                                   className:
                                     header.column.getCanSort() +
-                                      "items-center border justify-center flex-col"
+                                    "items-center border justify-center flex-col"
                                       ? "cursor-pointer select-none"
                                       : "",
                                   onClick: showTableBody ? (header.column.getToggleSortingHandler()) : (() => {})
@@ -131,9 +127,9 @@ export function CustomTable({
                                   header.getContext(),
                                 )}
                                 {{
-                                  asc: "↑",
-                                  desc: "↓",
-                                }[header.column.getIsSorted() as string] ??
+                                    asc: "↑",
+                                    desc: "↓",
+                                  }[header.column.getIsSorted() as string] ??
                                   null}
                               </div>
                               {header.column.getCanFilter() ? (
@@ -180,11 +176,11 @@ export function CustomTable({
                 ))}
               </TableHeader>
               {
-                  <TableBody>
-                    {
-                      showTableBody &&
-                      !tableProps.filtersOnly &&
-                      tableProps.table.getRowModel().rows.map((row) => {
+                <TableBody>
+                  {
+                    showTableBody &&
+                    !tableProps.filtersOnly &&
+                    tableProps.table.getRowModel().rows.map((row) => {
                       return (
                         <TableRow
                           key={row.id}
@@ -216,27 +212,86 @@ export function CustomTable({
                         </TableRow>
                       );
                     })
-                    }
-                    { !tableProps.filtersOnly && tableProps.canHideRows &&
-                      <TableRow className="p-0 m-0">
-                        <td colSpan={tableProps.table.getAllColumns().length} className="p-0 m-0">
-                          <Button
-                            variant="outline"
-                            onClick={() => setShowTableBody(!showTableBody)}
-                            className="w-full rounded-none h-6 p-0 m-0 text-muted-foreground"
-                          >
-                            {showTableBody ? "Hide" : "Show"} data
-                          </Button>
-                        </td>
-                      </TableRow>
-                    }
-                  </TableBody>
+                  }
+                  { !tableProps.filtersOnly && tableProps.canHideRows &&
+                    <TableRow className="p-0 m-0">
+                      <td colSpan={tableProps.table.getAllColumns().length} className="p-0 m-0">
+                        <Button
+                          variant="outline"
+                          onClick={() => setShowTableBody(!showTableBody)}
+                          className="w-full rounded-none h-6 p-0 m-0 text-muted-foreground"
+                        >
+                          {showTableBody ? "Hide" : "Show"} data
+                        </Button>
+                      </td>
+                    </TableRow>
+                  }
+                </TableBody>
               }
 
             </Table>
-          </FadeUp>
         </>
       }
     </div>
   );
+});
+
+interface CustomSmallTableProps {
+  title: string;
+  onAdd: () => void;
+  newValue: string;
+  setNew: (value: string) => Promise<void> | void;
+  values: SmallTableRow[];
+  onDeleteConfirmed: (id: number) => Promise<void>;
 }
+
+export interface SmallTableRow {
+  id: number;
+  name: string;
+}
+
+export const CustomSmallTable = memo((props: CustomSmallTableProps) => {
+
+  const { title, onAdd, setNew, newValue, values, onDeleteConfirmed  } = props;
+
+  return (
+    <div className="flex-grow">
+      <SubTitle title={title} {...{ className: "text-center mt-4 mb-0 lg:mb-6" }} />
+      <div className="flex my-2 flex-row lg:flex-row justify-around">
+        <Button
+          disabled={newValue.length === 0}
+          onClick={() => onAdd()}
+          type={"submit"}
+          variant="outline"
+          className="rounded-r-none border-green-500/50 hover:bg-green-500/50"
+        >
+          Add
+        </Button>
+        <SubmittableInput
+          onSubmit={() => onAdd()}
+          onChange={(e) => setNew(e.target.value)}
+          className="rounded-l-none focus-visible:ring-0 h-8 outline-none"
+        />
+
+      </div>
+      <table>
+        <tbody>
+        {values && values.map((value: SmallTableRow) => (
+          <TableRow key={value.id} className="w-full justify-center align-middle">
+            <td className={cn(`text-left border-r-0 py-0.5 px-2 font-thin text-xs w-full border overflow-x-scroll scroll-smooth`)}>
+              {value.name}
+            </td>
+            <td className="m-6 text-left border px-0 overflow-x-scroll scroll-smooth">
+              <DeleteDialog
+                onDeleteConfirmed={() => onDeleteConfirmed(value.id)}
+                entries={value.name}
+                tooltipText={"Delete"}
+              />
+            </td>
+          </TableRow>
+        ))}
+        </tbody>
+      </table>
+    </div>
+  )
+});

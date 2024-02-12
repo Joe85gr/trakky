@@ -10,6 +10,7 @@ import { PaymentForm } from "@/components/ui/table/payment-form.tsx";
 import { TableActionMenu } from "@/components/ui/table/table-action-menu.tsx";
 import { DeletePaymentsDialog } from "@/components/ui/table/delete-popup.tsx";
 import { Payment } from "@/infrastructure/payment.tsx";
+import { FadeUp } from "@/components/animations/fade.tsx";
 
 
 export default function App() {
@@ -60,14 +61,14 @@ export default function App() {
           selectedYear={selectedYear ?? ""}
         />
       </Containers>
-      <div className="mt-4">
-        <CustomTable
-          tableProps={{
-            table,
-            canHideRows: true,
-            filtersOnly: false,
-            page: "home",
-            tableActionMenu:
+      <FadeUp>
+        <div className="mt-4">
+          <CustomTable
+            table={table}
+            canHideRows={true}
+            filtersOnly={false}
+            page="home"
+            tableActionMenu={
               <Containers className="transition">
                 <TableActionMenu
                   exportName={"Payments"}
@@ -89,10 +90,12 @@ export default function App() {
                     ></DeletePaymentsDialog>
                   }
                 />
-              </Containers>,
-          }}
-        />
-      </div>
+              </Containers>
+            }
+          />
+        </div>
+
+      </FadeUp>
     </>
   );
 }
