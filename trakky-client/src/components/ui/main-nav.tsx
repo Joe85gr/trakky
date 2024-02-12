@@ -1,10 +1,18 @@
 "use client";
 
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Github, LogOut } from "lucide-react";
 import { AuthContext, IAuthContext } from "react-oauth2-code-pkce";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip.tsx";
 import { demoMode } from "@/constants.ts";
+import Spinner from "@/components/ui/spinner.tsx";
+import {
+  DropdownMenu,
+  DropdownMenuContent, DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu.tsx";
+import { GearIcon } from "@radix-ui/react-icons";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip.tsx";
 
 interface Links {
   href: string;
@@ -15,7 +23,11 @@ export function MainNav({
   children,
   ...props
 }: React.HTMLAttributes<HTMLElement>) {
+
   const {logOut, loginInProgress, token, tokenData} = useContext<IAuthContext>(AuthContext)
+  const userName = demoMode ? "Uncle Scrooge" : tokenData?.preferred_username ?? "";
+
+  const [loggingOut, setLoggingOut] = useState(false);
 
   const links: Links[] = [
     { href: "/", label: "Home" },
@@ -24,7 +36,14 @@ export function MainNav({
   if(token || demoMode) {
     links.push({ href: "/dashboards", label: "Dashboards" });
     links.push({ href: "/overview", label: "Overview" });
-    links.push({ href: "/settings", label: "Settings" });
+  }
+
+  const logout = () => {
+    if(demoMode) return;
+
+    setLoggingOut(true);
+    localStorage.clear()
+    logOut();
   }
 
   return (
@@ -56,20 +75,28 @@ export function MainNav({
                     </div>
                     <div className="flex flex-row justify-around gap-6">
                       {
-                        !loginInProgress &&
-                          token && (
-                            <TooltipProvider>
-                              <Tooltip>
-                                <TooltipTrigger
-                                  className="rounded w-4 flex justify-center items-center hover:text-gray-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring "
-                                >
-                                  <LogOut onClick={() => logOut()} className="w-4"/>
-                                </TooltipTrigger>
-                                <TooltipContent className="bg-slate-800 text-white">
-                                  Logout {tokenData?.preferred_username}
-                                </TooltipContent>
-                              </Tooltip>
-                            </TooltipProvider>
+                        ((!loginInProgress && token) || demoMode) &&
+                           (
+                          <>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger className="text-sm font-medium text-muted-foreground transition-colors hover:text-slate-600 focus:outline-none">
+                                {userName}
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent>
+                                <DropdownMenuItem className="cursor-pointer text-muted-foreground">
+                                  <a className="flex flex-row align-middle" href="/settings">
+                                    Settings
+                                    <GearIcon className="ml-9 w-4 h-4" />
+                                  </a>
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem className="cursor-pointer w-max text-muted-foreground" disabled={demoMode} onClick={logout}>
+                                    <div>Logout</div>
+                                    <LogOut className="w-4 h-4 ml-11" />
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </>
                         )
                       }
                       <TooltipProvider>
@@ -86,21 +113,20 @@ export function MainNav({
                             </a>
                           </TooltipTrigger>
                           <TooltipContent className="bg-slate-800 text-white">
-                            GitHub
+                            Source Code
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
                     </div>
                   </div>
                 </nav>
-
               </div>
-            </div>
 
+            </div>
           </div>
         </div>
       </div>
-        {children}
+        {loggingOut ? (<Spinner className="flex justify-center align-middle my-12" />)  : children}
     </>
   );
 }

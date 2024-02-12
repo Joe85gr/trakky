@@ -11,6 +11,7 @@ import { TableActionMenu } from "@/components/ui/table/table-action-menu.tsx";
 import { DeletePaymentsDialog } from "@/components/ui/table/delete-popup.tsx";
 import { Payment } from "@/infrastructure/payment.tsx";
 import { FadeUp } from "@/components/animations/fade.tsx";
+import { StorageKey } from "@/constants.ts";
 
 
 export default function App() {
@@ -34,13 +35,14 @@ export default function App() {
   })
 
   useEffect(() => {
-    const activeColumns = localStorage.getItem("expenses_active_columns");
+    `StorageKey`
+    const activeColumns = localStorage.getItem(`expenses_${StorageKey.ActiveColumns}`);
 
     if (activeColumns) {
       try {
         table.setColumnVisibility(JSON.parse(activeColumns));
       } catch (e) {
-        localStorage.removeItem("expenses_active_columns")
+        localStorage.removeItem(`expenses_${StorageKey.ActiveColumns}`)
         console.log(e);
       }
     }

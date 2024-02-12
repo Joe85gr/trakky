@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { GetPayments, Payment } from "@/infrastructure/payment.tsx";
 import { getAvailableYears } from "@/lib/summaries.ts";
 import { Budget, getBudgets } from "@/infrastructure/budget.tsx";
+import { StorageKey } from "@/constants.ts";
 
 export function usePaymentData() {
   const [payments, setPayments] = useState<Payment[]>([]);
@@ -17,7 +18,7 @@ export function usePaymentData() {
     years.push("All");
     setAvailableYears(years);
 
-    const storedYear = localStorage.getItem("selected_year");
+    const storedYear = localStorage.getItem(StorageKey.SelectedYear);
     if (storedYear && years.includes(storedYear)) {
       setSelectedYear(storedYear);
     } else {

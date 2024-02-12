@@ -9,7 +9,7 @@ import { demoMode } from "@/constants.ts";
 
 export function PageContainer({ children, className }: { children: React.ReactNode, className?: string }) {
 
-  const { loginInProgress, token, login} = useContext<IAuthContext>(AuthContext)
+  const { loginInProgress, token, login, } = useContext<IAuthContext>(AuthContext)
 
   return (
     <>

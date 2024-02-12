@@ -30,6 +30,7 @@ import { Button } from "@/components/ui/button.tsx";
 import { SubTitle } from "@/components/ui/text.tsx";
 import { SubmittableInput } from "@/components/ui/input.tsx";
 import { DeleteDialog } from "@/components/ui/table/delete-popup.tsx";
+import { StorageKey } from "@/constants.ts";
 
 export interface CustomTableProps {
   table: TableType<any>;
@@ -42,7 +43,7 @@ export interface CustomTableProps {
 export const CustomTable = memo((tableProps: CustomTableProps) => {
   const [showTableBody, setShowTableBody] = useState<boolean>(!tableProps.filtersOnly);
 
-  const activeColumnsKey = `${tableProps.page}_active_columns`;
+  const activeColumnsKey = `${tableProps.page}_${StorageKey.ActiveColumns}`;
 
   useEffect(() => {
     const storedActiveColumns = localStorage.getItem(activeColumnsKey);
@@ -51,7 +52,7 @@ export const CustomTable = memo((tableProps: CustomTableProps) => {
       try {
         tableProps.table.setColumnVisibility(JSON.parse(storedActiveColumns));
       } catch (e) {
-        localStorage.removeItem("expenses_active_columns")
+        localStorage.removeItem(activeColumnsKey)
         console.log(e);
       }
     } else {
