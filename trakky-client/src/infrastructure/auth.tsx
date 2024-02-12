@@ -1,5 +1,6 @@
 import axios from "axios";
 import { baseApiCall } from "@/infrastructure/base-api.ts";
+import { openIdWellKnownUrl } from "@/authConfig.ts";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
@@ -12,9 +13,8 @@ interface AuthConfig {
 
 
 export async function getOpenIdConfiguration(signal?: AbortSignal) {
-  const wellKnownUrl = "https://auth.rainingdreams.co.uk/application/o/trakky-test/.well-known/openid-configuration"
   const config = {
-    url: wellKnownUrl,
+    url: openIdWellKnownUrl,
     method: "GET",
     signal,
     headers: {

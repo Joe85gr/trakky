@@ -1,7 +1,5 @@
-export const serverUrl = "https://trakky-api.rainingdreams.co.uk/api";
-export const clientId = "CLIENT_ID";
-
 export const demoMode = import.meta.env.VITE_DEMO_MODE === 'true';
+
 
 export enum Endpoint {
   Payments = "payments",

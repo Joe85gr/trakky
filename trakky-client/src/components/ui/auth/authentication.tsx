@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { AuthProvider, TAuthConfig } from "react-oauth2-code-pkce";
 import { getOpenIdConfiguration } from "@/infrastructure/auth.tsx";
 import Spinner from "@/components/ui/spinner.tsx";
-import { clientId, demoMode, StorageKey } from "@/constants.ts";
+import { demoMode, StorageKey } from "@/constants.ts";
+import { clientId } from "@/authConfig.ts";
 
 
 export function AuthenticationCustomProvider({ children }: { children: React.ReactNode }) {
@@ -12,7 +13,6 @@ export function AuthenticationCustomProvider({ children }: { children: React.Rea
     if(demoMode) return;
 
     const fetchConfig = async () => {
-
 
       const { data, error } = await getOpenIdConfiguration();
       if(data) {

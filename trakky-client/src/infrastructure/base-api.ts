@@ -1,8 +1,9 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { ApiResponse } from "../models/api-response";
 import { AppError } from "../models/app-error";
-import { demoMode, serverUrl } from "@/constants.ts";
+import { demoMode } from "@/constants.ts";
 import axiosRetry from 'axios-retry';
+import { serverUrl } from "@/authConfig.ts";
 
 axiosRetry(axios, { retries: 3, retryDelay: axiosRetry.exponentialDelay });
 

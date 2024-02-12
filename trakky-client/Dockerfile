@@ -6,11 +6,16 @@ COPY ./package*.json ./
 RUN npm install
 
 ARG OPENID_AUTH_CLIENT_ID
+ARG OPENID_WELL_KNOWN_CONFIG_URL
+ARG SERVER_URL
 
 COPY . .
 
-RUN sed -i 's/"CLIENT_ID";/"'${OPENID_AUTH_CLIENT_ID}'"/g' /app/src/constants.ts
-RUN cat ./src/constants.ts
+RUN rm /app/src/authConfig.ts
+RUN echo "export const serverUrl = '$SERVER_URL';" >> /app/src/authConfig.ts
+RUN echo "export const openIdWellKnownUrl = '$OPENID_WELL_KNOWN_CONFIG_URL';" >> /app/src/authConfig.ts
+RUN echo "export const clientId = '$OPENID_AUTH_CLIENT_ID';" >> /app/src/authConfig.ts
+
 
 RUN npm run build
 

@@ -34,6 +34,6 @@ note: ALLOWED_ORIGINS must be comma separated. Defaults to http://localhost:5173
 Set and run the frontend:
 ```bash
 cd trakky-client
-docker build --build-arg OPENID_AUTH_CLIENT_ID=CLIENT_ID -t trakky-client .
-docker run -p 5173:8998 --name trakky -d trakky-client
+docker build --build-arg OPENID_AUTH_CLIENT_ID=CLIENT_ID --build-arg OPENID_WELL_KNOWN_CONFIG_URL=OPENID_WELL_KNOWN_CONFIG_URL --build-arg SERVER_URL=TRAKKY_SERVER_URL -t trakky-client .
+docker run -p 5173:80 --name trakky -d trakky-client
 ```
