@@ -26,12 +26,18 @@ Set and run the backend:
 ```bash
 cd trakky-server
 docker build -t trakky-server .
-docker run -p 8999:8999 -e DATABASE_URL="mysql://USERNAME:PASSWORD@URL:PORT/expenses?schema=public" --name trakky-server -d trakky-server
+docker run -p 8999:8999 -e DATABASE_URL="mysql://USERNAME:PASSWORD@URL:PORT/expenses?schema=public" --name -e AUTH_USERINFO_URL=authentik_user_url -e ALLOWED_ORIGINS="http://localhost,http://some-url.localdomain" trakky-server -d trakky-server 
 ```
 
-Set and run the frontent:
+note: ALLOWED_ORIGINS must be comma separated. Defaults to http://localhost:5173
+
+Set and run the frontend:
 ```bash
 cd trakky-client
 docker build -t trakky-client .
-docker run -p 8998:8998 --name trakky -d trakky-client
+docker run -p 5173:8998 --name trakky -d -e VITE_AUTH_CLIENT_ID=openidClientId -e VITE_AUTH_AUTHORIZATION_ENDPOINT=yourOpenidAuth.endpoint -e VITE_AUTH_LOGOUT_URI=yourOpenIdLogoutUri -e VITE_AUTH_TOKEN_ENDPOINT=yourOpenIdTokenUrl -e VITE_AUTH_SCOPE="scopes" trakky-client
 ```
+
+optional frontend vars:
+VITE_AUTH_AUTO_LOGIN (defaults to false)
+VITE_AUTH_REDIRECT_URI (defaults to trakky homepage)
