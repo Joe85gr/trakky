@@ -34,10 +34,6 @@ note: ALLOWED_ORIGINS must be comma separated. Defaults to http://localhost:5173
 Set and run the frontend:
 ```bash
 cd trakky-client
-docker build -t trakky-client .
-docker run -p 5173:8998 --name trakky -d -e VITE_AUTH_CLIENT_ID=openidClientId -e VITE_AUTH_AUTHORIZATION_ENDPOINT=yourOpenidAuth.endpoint -e VITE_AUTH_LOGOUT_URI=yourOpenIdLogoutUri -e VITE_AUTH_TOKEN_ENDPOINT=yourOpenIdTokenUrl -e VITE_AUTH_SCOPE="scopes" trakky-client
+docker build --build-arg OPENID_AUTH_CLIENT_ID=CLIENT_ID -t trakky-client .
+docker run -p 5173:8998 --name trakky -d trakky-client
 ```
-
-optional frontend vars:
-VITE_AUTH_AUTO_LOGIN (defaults to false)
-VITE_AUTH_REDIRECT_URI (defaults to trakky homepage)
