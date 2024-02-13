@@ -21,7 +21,6 @@ export function PageContainer({ children, className }: { children: React.ReactNo
           }
       </div>
     </>
-
   );
 }
 

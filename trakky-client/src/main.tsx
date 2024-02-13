@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
-import { ThemeProvider } from "./components/ui/theme-provider.tsx";
+import { ThemeProvider } from "./components/providers/theme.tsx";
 import { RouterProvider } from "react-router";
 import { createBrowserRouter } from "react-router-dom";
 import DashboardPage from "@/app/dashboards/page.tsx";
@@ -14,8 +14,8 @@ import "aos/dist/aos.css";
 import { PageContainer } from "@/components/ui/containers.tsx";
 import { Toaster } from "@/components/ui/toaster.tsx";
 import SettingsPage from "@/app/settings/page.tsx";
-import { HealthCheckProvider } from "@/components/ui/health-check-provider.tsx";
-import { AuthenticationCustomProvider } from "@/components/ui/auth/authentication.tsx";
+import { HealthCheckProvider } from "@/components/providers/health-check.tsx";
+import { AuthenticationCustomProvider } from "@/components/providers/authentication.tsx";
 
 AOS.init({ once: true });
 

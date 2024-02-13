@@ -20,8 +20,6 @@ export const HealthCheckProvider = memo(() => {
       checkServer().then(() => { });
   }, []);
 
-
-
   return (
     <>
       {!demoMode && serverDown && (

@@ -24,13 +24,13 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu.tsx";
-import { ChevronDown } from "lucide-react";
 import { memo, ReactNode, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button.tsx";
 import { SubTitle } from "@/components/ui/text.tsx";
 import { SubmittableInput } from "@/components/ui/input.tsx";
 import { DeleteDialog } from "@/components/ui/table/delete-popup.tsx";
 import { StorageKey } from "@/constants.ts";
+import { ChevronDownIcon } from "@/components/ui/icons/icons.tsx";
 
 export interface CustomTableProps {
   table: TableType<any>;
@@ -143,7 +143,7 @@ export const CustomTable = memo((tableProps: CustomTableProps) => {
                               ) : header.id == "edit" ? <> <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                   <a className="bg-transparent hover:bg-transparent p-0 m-0 flex justify-center w-full h-full border-none active:bg-transparent focus:bg-transparent focus-visible:bg-transparent text-slate-600 hover:text-slate-500">
-                                    <ChevronDown className="h-6 w-6 cursor-pointer" />
+                                    <ChevronDownIcon className="h-6 w-6 cursor-pointer" />
                                   </a>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="end">

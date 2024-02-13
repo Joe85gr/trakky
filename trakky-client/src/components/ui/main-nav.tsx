@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useContext, useState } from "react";
-import { Github, LogOut } from "lucide-react";
 import { AuthContext, IAuthContext } from "react-oauth2-code-pkce";
 import { demoMode } from "@/constants.ts";
 import Spinner from "@/components/ui/spinner.tsx";
@@ -13,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu.tsx";
 import { GearIcon } from "@radix-ui/react-icons";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip.tsx";
+import { GithubIcon, LogoutIcon } from "@/components/ui/icons/icons.tsx";
 
 interface Links {
   href: string;
@@ -92,7 +92,7 @@ export function MainNav({
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem className="cursor-pointer w-max text-muted-foreground" disabled={demoMode} onClick={logout}>
                                     <div>Logout</div>
-                                    <LogOut className="w-4 h-4 ml-11" />
+                                    <LogoutIcon className="w-4 h-4 ml-11" />
                                 </DropdownMenuItem>
                               </DropdownMenuContent>
                             </DropdownMenu>
@@ -109,7 +109,7 @@ export function MainNav({
                               className="cursor-pointer inline-flex items-center justify-center text-slate-600 hover:text-slate-500 h-8 py-2"
                               target="_blank"
                             >
-                              <Github className="h-4 w-4" />
+                              <GithubIcon className="h-4 w-4" />
                             </a>
                           </TooltipTrigger>
                           <TooltipContent className="bg-slate-800 text-white">

@@ -24,13 +24,13 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover.tsx";
 import { cn } from "@/lib/utils.ts";
-import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar.tsx";
 import React from "react";
 import { resultToast } from "@/components/ui/use-toast.ts";
 import { AddBudgets, Budget, EditBudget } from "@/infrastructure/budget.tsx";
 import { firstOfTheMonthDateString } from "@/lib/formatter.ts";
 import { errorMessage } from "@/components/ui/table/form-error-message.ts";
+import { CalendarIcon } from "@/components/ui/icons/icons.tsx";
 
 const customErrorMap: z.ZodErrorMap = (issue, ctx) => {
   if (issue.code === z.ZodIssueCode.invalid_type) {

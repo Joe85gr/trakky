@@ -25,7 +25,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover.tsx";
 import { cn } from "@/lib/utils.ts";
-import { CalendarIcon, Minus, Plus } from "lucide-react";
+import { CalendarIcon, MinusIcon, PlusIcon } from "@/components/ui/icons/icons.tsx";
 import { Calendar } from "@/components/ui/calendar.tsx";
 import { useEffect, useReducer, useState } from "react";
 import { Textarea } from "@/components/ui/textarea.tsx";
@@ -279,7 +279,7 @@ export function PaymentForm({
                               onClick={() => setAmountIsNegative(!amountIsNegative)}
                               pressed={amountIsNegative}
                             >
-                              {amountIsNegative ? (<Minus className="h-4 w-2.5" />) : (<Plus className="h-4 w-2.5" />)}
+                              {amountIsNegative ? (<MinusIcon className="h-4 w-2.5" />) : (<PlusIcon className="h-4 w-2.5" />)}
                             </Toggle>
                             <Input
                               disabled={form.formState.isSubmitting || form.formState.isSubmitted}
