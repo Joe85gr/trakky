@@ -26,6 +26,8 @@ import { resultToast } from '@/components/ui/use-toast';
 import { AddBudgets, EditBudget } from '@/infrastructure/budget';
 import { firstOfTheMonthDateString } from '@/lib/formatter';
 import { errorMessage } from '@/components/ui/table/form-error-message';
+import { CalendarIcon } from 'lucide-react';
+import { Budget } from '@/models/dtos';
 
 const customErrorMap: z.ZodErrorMap = (issue, ctx) => {
   if (issue.code === z.ZodIssueCode.invalid_type) {
@@ -39,7 +41,7 @@ const customErrorMap: z.ZodErrorMap = (issue, ctx) => {
 
 z.setErrorMap(customErrorMap);
 
-export function BudgetForm({
+function BudgetForm({
   title,
   refresh,
   existingDates,
@@ -48,7 +50,7 @@ export function BudgetForm({
   title: string;
   refresh: (flushBeforeRefresh: boolean) => void;
   existingDates: Date[];
-  editValues?: Budget;
+  editValues: Budget;
 }) {
   const formSchema = z.object({
     date: z.date(),
@@ -97,14 +99,16 @@ export function BudgetForm({
 
       const { data, error } = await AddBudgets([budget]);
       if (error || !data) {
-        return errorMessage(setIsError, error?.error);
+        errorMessage(setIsError, error?.error);
+        return;
       }
     } else {
       budget.id = editValues.id;
       const { data, error } = await EditBudget(budget);
 
       if (error || !data) {
-        return errorMessage(setIsError, error?.error);
+        errorMessage(setIsError, error?.error);
+        return;
       }
     }
 

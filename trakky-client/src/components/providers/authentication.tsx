@@ -1,55 +1,67 @@
-import React, { useEffect, useState } from "react";
-import { AuthProvider, TAuthConfig } from "react-oauth2-code-pkce";
-import { getOpenIdConfiguration } from "@/infrastructure/auth.tsx";
-import Spinner from "@/components/ui/spinner.tsx";
-import { demoMode, StorageKey } from "@/constants.ts";
-import { clientId } from "@/authConfig.ts";
+import React, { useEffect, useState } from 'react';
+import { AuthProvider, TAuthConfig } from 'react-oauth2-code-pkce';
+import { getOpenIdConfiguration } from '@/infrastructure/auth';
+import Spinner from '@/components/ui/spinner';
+import { demoMode, StorageKey } from '@/constants';
+import { clientId } from '@/authConfig';
+import { AppError } from '@/models/app-error';
 
-
-export function AuthenticationCustomProvider({ children }: { children: React.ReactNode }) {
-  const [authConfig, setAuthConfig] = useState<TAuthConfig>()
+export function AuthenticationCustomProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const [err, setError] = useState<AppError>();
+  const [authConfig, setAuthConfig] = useState<TAuthConfig>();
 
   useEffect(() => {
-    if(demoMode) return;
+    if (demoMode) return;
 
-    const fetchConfig = async () => {
-
+    const fetchConfig = async (): Promise<AppError | null | undefined> => {
       const { data, error } = await getOpenIdConfiguration();
-      if(data) {
+      if (data) {
         const config = {
           autoLogin: false,
-          clientId: clientId,
+          clientId,
           authorizationEndpoint: data.authorization_endpoint,
           logoutEndpoint: data.end_session_endpoint,
           tokenEndpoint: data.token_endpoint,
-          redirectUri: window.location.protocol + "//" + window.location.host + "/",
-          scope: data.scopes_supported.join(" "),
-        } as TAuthConfig
+          redirectUri: `${window.location.protocol}//${window.location.host}/`,
+          scope: data.scopes_supported.join(' '),
+        } as TAuthConfig;
 
         setAuthConfig(config);
-
-        localStorage.setItem(StorageKey.OpenIdConfig, JSON.stringify(config))
+        localStorage.setItem(StorageKey.OpenIdConfig, JSON.stringify(config));
       }
 
-      if(error) {
-        console.log(error)
-      }
-    }
+      return error;
+    };
 
     const existingAuthConfig = localStorage.getItem(StorageKey.OpenIdConfig);
-    if(existingAuthConfig) {
-      return setAuthConfig(JSON.parse(existingAuthConfig) as unknown as TAuthConfig)
+    if (existingAuthConfig) {
+      setAuthConfig(JSON.parse(existingAuthConfig) as unknown as TAuthConfig);
+      return;
     }
 
-    fetchConfig().then(() => console.log("loaded auth config."))
-
+    fetchConfig().then((error) => {
+      if (error) {
+        setError(error);
+      }
+    });
   }, []);
 
-  return demoMode ? children :
-    authConfig ? (
-        <AuthProvider authConfig={authConfig}>
-          {children}
-        </AuthProvider>
-      )
-      : (<Spinner className="flex flex-row justify-center align-middle my-12" />)
+  if (demoMode) {
+    return children;
+  }
+  if (authConfig) {
+    return <AuthProvider authConfig={authConfig}>{children}</AuthProvider>;
+  }
+  if (err) {
+    return <div>Could not authenticate!</div>;
+  }
+  return (
+    <Spinner className="flex flex-row justify-center align-middle my-12" />
+  );
 }
+
+export default AuthenticationCustomProvider;
