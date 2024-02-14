@@ -27,7 +27,7 @@ function SummaryCard({
   children,
 }: SummaryCardProps) {
   return (
-    <Card className="border rounded-xl p-1 md:p-4">
+    <Card className="border rounded-xl p-1 md:p-4 h-[130px] md:h-[150px]">
       <CardHeader className="flex flex-row items-center justify-between space-y-0">
         <CardTitle className="text-sm font-medium text-muted-foreground">
           {title}
@@ -90,7 +90,8 @@ export function Summary<TData>({
   const lastYearCurrentMonth = new Date(
     currentDate.getFullYear() - 1,
     currentDate.getMonth()
-  ); // Calculate last year's current month
+  );
+
   const selectedThisYear =
     parseInt(selectedYear, 10) === currentDate.getFullYear();
 
@@ -105,6 +106,19 @@ export function Summary<TData>({
     selectedYear,
     lastYearCurrentMonth
   );
+
+  const differenceText = (
+    partialTot: number,
+    ownerBalancesLenght: number,
+    amount: number
+  ) => {
+    const diff = Math.floor(partialTot / ownerBalancesLenght - amount);
+
+    if (diff === 0) return '';
+    if (diff === Number.POSITIVE_INFINITY || diff === Number.NEGATIVE_INFINITY)
+      return '';
+    return `(-${formatCurrency(partialTot / ownerBalancesLenght - amount)})`;
+  };
 
   const ownerBalances: OwnerBalance[] = [];
 
@@ -124,12 +138,11 @@ export function Summary<TData>({
         ownerBalances.push({
           owner: item.owner as string,
           amount: item.amount,
-          difference:
-            partialTotal / ownerBalances.length - item.amount <= 0.1
-              ? ''
-              : `(-${formatCurrency(
-                  partialTotal / ownerBalances.length - item.amount
-                )})`,
+          difference: differenceText(
+            partialTotal,
+            ownerBalances.length,
+            item.amount
+          ),
         });
       }
     });
@@ -138,46 +151,52 @@ export function Summary<TData>({
     totalAmount > 0 && (
       <Tabs defaultValue="overview" className="space-y-4 animate-fade">
         <TabsContent value="overview" className="space-y-4" tabIndex={-1}>
-          <FadeLeft className="grid gap-2 md:gap-4 grid-cols-2">
-            <SummaryCard
-              title="Total"
-              contentText={formatCurrency(totalAmount)}
-              contentSubText={changePercentage}
-            />
-            <SummaryCard
-              title="Partial Total"
-              contentText={formatCurrency(partialTotal)}
-            >
-              {ownerBalances.map((balance: OwnerBalance) => (
-                <div
-                  className="text-sm text-left"
-                  key={`${balance.amount}-accordion`}
+          <FadeLeft>
+            <div className="flex gap-2 flex-col sm:flex-row sm:gap-4 grow">
+              <div className="w-[100%] sm:w-[50%]">
+                <SummaryCard
+                  title="Total"
+                  contentText={formatCurrency(totalAmount)}
+                  contentSubText={changePercentage}
+                />
+              </div>
+              <div className="w-[100%] sm:w-[50%]">
+                <SummaryCard
+                  title="Partial Total"
+                  contentText={formatCurrency(partialTotal)}
                 >
-                  <div className="flex" key={`${balance.amount}-wrapper`}>
+                  {ownerBalances.map((balance: OwnerBalance) => (
                     <div
-                      className="mr-2 min-w-[60px] text-muted-foreground font-bold"
-                      key={`${balance.amount}-owner`}
+                      className="text-sm text-left"
+                      key={`${balance.amount}-accordion`}
                     >
-                      {balance.owner}:
-                    </div>
-                    <div
-                      className="flex text-muted-foreground"
-                      key={`${balance.amount}-amount`}
-                    >
-                      {formatCurrency(balance.amount)}
-                      {balance.difference && (
-                        <span
-                          className="ml-2 text-slate-600 hidden xs:flex"
-                          key={`${balance.amount}-difference`}
+                      <div className="flex" key={`${balance.amount}-wrapper`}>
+                        <div
+                          className="mr-2 min-w-[60px] text-muted-foreground font-bold"
+                          key={`${balance.amount}-owner`}
                         >
-                          {balance.difference}
-                        </span>
-                      )}
+                          {balance.owner}:
+                        </div>
+                        <div
+                          className="flex text-muted-foreground"
+                          key={`${balance.amount}-amount`}
+                        >
+                          {formatCurrency(balance.amount)}
+                          {balance.difference && (
+                            <span
+                              className="ml-2 text-slate-600 hidden xs:flex"
+                              key={`${balance.amount}-difference`}
+                            >
+                              {balance.difference}
+                            </span>
+                          )}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              ))}
-            </SummaryCard>
+                  ))}
+                </SummaryCard>
+              </div>
+            </div>
           </FadeLeft>
         </TabsContent>
       </Tabs>
