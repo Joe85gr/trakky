@@ -29,8 +29,6 @@ import { getBudgets } from '@/infrastructure/budget';
 import { ContentResultContainer } from '@/components/ui/containers';
 import { ErrorMessage } from '@/infrastructure/base-api';
 import BudgetActionMenu from './components/budget-action-menu';
-import PopupDialog from '@/components/ui/table/popup-dialog';
-import { FilePenLine } from 'lucide-react';
 
 function SettingsPage() {
   const [budgets, setBudgets] = useState<Budget[]>([]);
@@ -113,7 +111,7 @@ function SettingsPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  async function OnTypeAdd() {
+  const OnTypeAdd = async () => {
     if (
       newType.length === 0 ||
       valueExistsToast(
@@ -129,7 +127,7 @@ function SettingsPage() {
       successMessage: 'Type added',
       errorMessage: "Couldn't save Type!",
     });
-  }
+  };
 
   async function OnTypeDeleteConfirmed(id: number) {
     const success = await DeleteTypes([id]);
@@ -141,7 +139,7 @@ function SettingsPage() {
     });
   }
 
-  async function OnOwnerAdd() {
+  const OnOwnerAdd = async () => {
     if (
       newOwner.length === 0 ||
       valueExistsToast(
@@ -157,9 +155,9 @@ function SettingsPage() {
       successMessage: 'Owner added',
       errorMessage: "Couldn't save Owner!",
     });
-  }
+  };
 
-  async function OnOwnerDeleteConfirmed(id: number) {
+  const OnOwnerDeleteConfirmed = async (id: number) => {
     const success = await DeleteOwners([id]);
     await fetchOwners();
     successFailToast({
@@ -167,7 +165,7 @@ function SettingsPage() {
       successMessage: 'Owner Removed',
       errorMessage: "Couldn't remove Owner!",
     });
-  }
+  };
 
   const errorToast = (message: string) => {
     toast({
@@ -245,9 +243,9 @@ function SettingsPage() {
                   tableActionMenu={
                     <BudgetActionMenu
                       table={table}
+                      budgets={budgets}
                       onDeleteConfirmed={onDeleteConfirmed}
                       onRefresh={onRefresh}
-                      budgets={budgets}
                     />
                   }
                 />

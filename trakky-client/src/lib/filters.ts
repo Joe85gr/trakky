@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 /* eslint-disable no-extend-native */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */

@@ -4,15 +4,12 @@ import { Endpoint } from '@/constants';
 async function serverIsDown(signal?: AbortSignal) {
   const config = makeBaseRequest(Endpoint.HealthCheck, 'GET', signal);
 
-  const { data, error } = await baseApiCall<boolean>({
+  const { data } = await baseApiCall<boolean>({
     request: config,
     demoModeData: () => false,
   });
 
-  if (error) {
-    console.log('Error while performing health check:', error);
-  }
-
+  // TODO: return error as well and handle
   return !data ?? true;
 }
 

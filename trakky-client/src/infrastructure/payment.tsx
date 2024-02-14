@@ -10,15 +10,12 @@ import { Payment } from '@/models/dtos';
 export async function GetPayments(signal?: AbortSignal): Promise<Payment[]> {
   const config = makeBaseRequest(Endpoint.Payments, 'GET', signal);
 
-  const { data, error } = await baseApiCall<Payment[]>({
+  const { data } = await baseApiCall<Payment[]>({
     request: config,
     demoModeData: mockPayments,
   });
 
-  if (error) {
-    console.error('Error while getting payments:', error);
-  }
-
+  // TODO: return data and error & handle
   return data ?? [];
 }
 

@@ -79,7 +79,8 @@ export function useExpensesTable({
 
   const columns = useMemo<ColumnDef<Payment, number | string>[]>(
     () => PaymentColumnDefinition(refreshData),
-    [refreshData]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
   );
 
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
@@ -149,8 +150,8 @@ export function useExpensesTable({
   }
 
   function onEdited() {
-    // table.resetRowSelection();
-    // onRefresh(false).then(() => {});
+    table.resetRowSelection();
+    onRefresh(false).then(() => {});
   }
 
   return {
@@ -184,7 +185,8 @@ export function useBudgetsTable({
 
   const columns = useMemo<ColumnDef<Budget, number | string>[]>(
     () => BudgetColumnDefinition(data, refreshData),
-    [data, refreshData]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
   );
 
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({

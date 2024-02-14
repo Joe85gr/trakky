@@ -23,12 +23,9 @@ export async function AddTypes(types: Type[]): Promise<boolean> {
   const config = makeBaseRequest(Endpoint.Types, 'POST');
   config.data = baseRequestData(types);
 
-  const { data, error } = await baseApiCall<boolean>({ request: config });
+  const { data } = await baseApiCall<boolean>({ request: config });
 
-  if (error) {
-    console.error('Error while adding types:', error);
-  }
-
+  // TODO: return error as well and handle
   return data ?? false;
 }
 
@@ -36,11 +33,8 @@ export async function DeleteTypes(ids: number[]): Promise<boolean> {
   const config = makeBaseRequest(Endpoint.Types, 'DELETE');
   config.data = baseRequestData(ids);
 
-  const { data, error } = await baseApiCall<boolean>({ request: config });
+  const { data } = await baseApiCall<boolean>({ request: config });
 
-  if (error) {
-    console.error('Error while deleting types:', error);
-  }
-
+  // TODO: return error as well and handle
   return data ?? false;
 }

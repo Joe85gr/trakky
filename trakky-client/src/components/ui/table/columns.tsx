@@ -3,8 +3,8 @@ import { formatCurrency, formatStringDate } from '@/lib/formatter';
 import { fuzzySort } from '@/lib/filters';
 import { EditCell } from '@/components/ui/table/edit-cell';
 import { PaymentForm } from '@/components/ui/table/payment-form';
-import { BudgetForm } from '@/components/ui/table/budget-form';
 import { Payment, Budget } from '@/models/dtos';
+import BudgetForm from '@/app/settings/components/budget-form';
 
 export const PaymentColumnDefinition = (
   refresh: (signal?: AbortSignal, flushPaymentsBeforeRefresh?: boolean) => void
@@ -140,7 +140,7 @@ export const colSize = (id: string): number | string => {
     case 'description':
       return 'auto';
     case 'edit':
-      return 20;
+      return 40;
     case 'date':
       return 90;
     case 'type' || 'owner':

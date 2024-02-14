@@ -43,7 +43,6 @@ export const CustomTable = memo(
     const activeColumnsKey = `${tableProps.page}_${StorageKey.ActiveColumns}`;
 
     useEffect(() => {
-      console.log("table use effect called..")
       const storedActiveColumns = localStorage.getItem(activeColumnsKey);
 
       if (storedActiveColumns) {
@@ -89,7 +88,9 @@ export const CustomTable = memo(
             {' '}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <ChevronDownIcon className="h-6 w-6 cursor-pointer mx-1.5" />
+                <div className="flex flex-row justify-center align-middle">
+                  <ChevronDownIcon className="h-4 w-4 cursor-pointer mx-1.5" />
+                </div>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 {tableProps.table
@@ -181,7 +182,7 @@ export const CustomTable = memo(
                     key={row.id}
                     onClick={row.getToggleSelectedHandler()}
                     className={cn(
-                      'hover:bg-slate-800/50 border border-slate-800 transition',
+                      'hover:bg-slate-800/50 border border-slate-800',
                       row.getIsSelected() &&
                         'bg-slate-600/50 hover:bg-slate-600'
                     )}

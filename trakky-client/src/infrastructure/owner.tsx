@@ -34,14 +34,10 @@ export async function AddOwners(
 
   config.data = baseRequestData(owners);
 
-  const { data, error } = await baseApiCall<boolean>({
+  const { data } = await baseApiCall<boolean>({
     request: config,
     demoModeData: () => true,
   });
-
-  if (error) {
-    console.error('Error while adding owners:', error);
-  }
 
   return data ?? false;
 }
@@ -50,14 +46,10 @@ export async function EditOwner(owner: Owner): Promise<boolean> {
   const config = makeBaseRequest(Endpoint.Owners, 'PUT');
   config.data = baseRequestData(owner);
 
-  const { data, error } = await baseApiCall<boolean>({
+  const { data } = await baseApiCall<boolean>({
     request: config,
     demoModeData: () => true,
   });
-
-  if (error) {
-    console.error('Error while editing owners:', error);
-  }
 
   return data ?? false;
 }
@@ -69,14 +61,11 @@ export async function DeleteOwners(
   const config = makeBaseRequest(Endpoint.Owners, 'DELETE', signal);
   config.data = baseRequestData(ids);
 
-  const { data, error } = await baseApiCall<boolean>({
+  const { data } = await baseApiCall<boolean>({
     request: config,
     demoModeData: () => true,
   });
 
-  if (error) {
-    console.error('Error while getting owners:', error);
-  }
-
+  // TODO: return error as well and handle
   return data ?? false;
 }
