@@ -23,8 +23,8 @@ import Spinner from '@/components/ui/spinner';
 import { GetBudgets } from '@/infrastructure/budget';
 import { ContentResultContainer } from '@/components/ui/containers';
 import { ErrorMessage } from '@/infrastructure/base-api';
-import BudgetActionMenu from './components/budget-action-menu';
 import { GetTypes, AddTypes, DeleteTypes } from '@/infrastructure/types';
+import BudgetActionMenu from './components/budget-action-menu';
 
 function SettingsPage() {
   const [budgets, setBudgets] = useState<Budget[]>([]);
