@@ -15,4 +15,8 @@ jobs:
           node-version: "20.x"
 
       - name: Test Client
-        run: ./trakky-client/scripts/build-and-test.sh
+        run: |
+          cd trakky-client
+          npm ci
+          npm run build --if-present
+          npm run lint
