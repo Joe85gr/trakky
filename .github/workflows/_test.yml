@@ -15,4 +15,4 @@ jobs:
           node-version: "20.x"
 
       - name: Test Client
-        run: ./trakky-client/scripts/test.sh
+        run: ./trakky-client/scripts/build-and-test.sh
