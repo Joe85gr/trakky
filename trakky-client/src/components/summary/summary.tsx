@@ -114,7 +114,7 @@ export function Summary<TData>({
   ) => {
     const diff = Math.floor(partialTot / ownerBalancesLenght - amount);
 
-    if (diff === 0) return '';
+    if (diff === 0 || diff < 0) return '';
     if (diff === Number.POSITIVE_INFINITY || diff === Number.NEGATIVE_INFINITY)
       return '';
     return `(-${formatCurrency(partialTot / ownerBalancesLenght - amount)})`;
@@ -145,6 +145,15 @@ export function Summary<TData>({
           ),
         });
       }
+
+      ownerBalances.forEach((balance) => {
+        // eslint-disable-next-line no-param-reassign
+        balance.difference = differenceText(
+          partialTotal,
+          ownerBalances.length,
+          balance.amount
+        );
+      });
     });
 
   return (
