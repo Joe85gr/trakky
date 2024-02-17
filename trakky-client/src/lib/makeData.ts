@@ -17,7 +17,7 @@ export function mockPayments() {
   return payments.sort(sortByDate) as unknown as Payment[];
 }
 
-export function makeBudgets() {
+export function mockBudgets() {
   return budgets.sort(sortByDate) as unknown as Budget[];
 }
 
@@ -40,7 +40,7 @@ export function makeTypes() {
 export function mockBackup() {
   return {
     payments: mockPayments(),
-    budgets: makeBudgets(),
+    budgets: mockBudgets(),
     owners: makeOwners(),
     types: makeTypes(),
   } as unknown as Backup;
