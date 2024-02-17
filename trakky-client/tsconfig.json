@@ -9,6 +9,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
+    "types": ["node", "@testing-library/jest-dom"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -26,6 +27,7 @@
     "noFallthroughCasesInSwitch": true,
   },
   "include": [
+    "vitest.config.ts",
     ".eslintrc.cjs",
     "vite.config.ts",
     "src"

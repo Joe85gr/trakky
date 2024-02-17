@@ -9,13 +9,12 @@ export function calculatePercentageDiff(current: number, previous: number) {
 }
 
 export function getTotalForDate(totals: Total[], untilDate: Date) {
+  const untilDateYear = untilDate.getFullYear();
   return totals
     .filter((total) => {
       if (total.date) {
         const date = new Date(total.date);
-        return (
-          date <= untilDate && date.getFullYear() === untilDate.getFullYear()
-        );
+        return date <= untilDate && date.getFullYear() === untilDateYear;
       }
       return false;
     })
@@ -27,11 +26,12 @@ export function getPreviousYearTotal(
   totalsPerYear: Total[],
   selectedYear: string
 ) {
+  const numericYear = Number(selectedYear) - 1;
   return totalsPerYear
     .filter((total) => {
       if (total.date) {
         const totalDate = new Date(total.date);
-        return totalDate.getFullYear() === Number(selectedYear) - 1;
+        return totalDate.getFullYear() === numericYear;
       }
       return false;
     })
