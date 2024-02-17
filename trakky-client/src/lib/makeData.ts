@@ -21,14 +21,14 @@ export function mockBudgets() {
   return budgets.sort(sortByDate) as unknown as Budget[];
 }
 
-export function makeOwners() {
+export function mockOwners() {
   return [
     { id: 1, name: 'Donald' },
     { id: 2, name: 'Goofy' },
   ];
 }
 
-export function makeTypes() {
+export function mockTypes() {
   return [
     { id: 1, name: 'Food' },
     { id: 2, name: 'General' },
@@ -41,7 +41,7 @@ export function mockBackup() {
   return {
     payments: mockPayments(),
     budgets: mockBudgets(),
-    owners: makeOwners(),
-    types: makeTypes(),
+    owners: mockOwners(),
+    types: mockTypes(),
   } as unknown as Backup;
 }
