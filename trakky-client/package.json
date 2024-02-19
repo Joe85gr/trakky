@@ -42,7 +42,7 @@
     "react-day-picker": "^8.9.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.47.0",
-    "react-oauth2-code-pkce": "^1.16.1",
+    "react-oauth2-code-pkce": "^1.17.0",
     "react-router": "^6.22.0",
     "react-router-dom": "^6.16.0",
     "recharts": "^2.9.0",
