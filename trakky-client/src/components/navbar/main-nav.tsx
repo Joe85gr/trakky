@@ -43,9 +43,7 @@ export function MainNav({ children }: React.HTMLAttributes<HTMLElement>) {
 
   const logout = async () => {
     if (demoMode) return;
-
-    // setLoggingOut(true);
-    // localStorage.clear();
+    localStorage.clear();
     await auth.signoutRedirect();
   };
 
