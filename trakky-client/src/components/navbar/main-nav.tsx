@@ -85,8 +85,6 @@ export function MainNav({ children }: React.HTMLAttributes<HTMLElement>) {
               </button>
               <div className="hidden sm:ml-6 sm:block">
                 <div className="flex space-x-4">
-                  {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
-
                   {links.map((link) => {
                     return (
                       <a
@@ -146,7 +144,6 @@ export function MainNav({ children }: React.HTMLAttributes<HTMLElement>) {
         </div>
       </nav>
       <div>
-        {/* <div className=" bg-gray-800 z-40 fixed blur sm:hidden h-20 inset-x-0 bottom-0 " /> */}
         <nav className="z-50 fixed inset-x-0 bottom-0 border-t-gray-900 sm:hidden bg-gray-800 flex-row items-center justify-around px-8 py-2 visible md:invisible w-full  text-2xl">
           <div className="flex flex-row justify-around align-middle">
             {links.map((link) => (
