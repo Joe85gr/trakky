@@ -10,7 +10,8 @@ function PaymentsRecap({
   entries: Payment[];
   limitedSpace?: boolean;
 }) {
-  const tdStyle = 'px-2 text-left border scroll-smooth overflow-scroll no-scrollbar';
+  const tdStyle =
+    'px-2 text-left border scroll-smooth overflow-scroll no-scrollbar';
   return (
     <table className="flex justify-center align-middle">
       <tbody className={limitedSpace ? 'max-h-[130px]' : ''}>
