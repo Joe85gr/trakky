@@ -2,6 +2,7 @@ import { demoMode } from '@/constants';
 import { ReloadIcon } from '@radix-ui/react-icons';
 import { hasAuthParams, useAuth } from 'react-oidc-context';
 import { ReactNode, useEffect } from 'react';
+import { skipAuth } from '@/authConfig';
 import Login from './login';
 import Loading from './loading';
 
@@ -16,6 +17,7 @@ export function ProtectedContainer({
 
   useEffect(() => {
     if (
+      !skipAuth &&
       !demoMode &&
       !hasAuthParams() &&
       !auth.isAuthenticated &&
@@ -27,7 +29,7 @@ export function ProtectedContainer({
   }, [auth]);
 
   const containerContent = () => {
-    if (demoMode) return children;
+    if (demoMode || skipAuth) return children;
 
     if (auth.isLoading) {
       return <Login login={auth.signinRedirect} />;
@@ -48,7 +50,7 @@ export function ProtectedContainer({
     <div
       className={`md:container px-0 pb-2 sm:px-12 mx-auto w-full transition ${className}`}
     >
-      <Loading loading={auth.isLoading}>{containerContent()}</Loading>
+      <Loading loading={auth && auth.isLoading}>{containerContent()}</Loading>
     </div>
   );
 }
