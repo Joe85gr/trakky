@@ -9,6 +9,7 @@ import {
   HomeIcon,
   LucideIcon,
   BabyIcon,
+  HeartIcon,
 } from 'lucide-react';
 
 interface Dictionary<T> {
@@ -38,6 +39,7 @@ export const CategoryIcon: Dictionary<JSX.Element> = {
   Transport: <IconWrapper IconComponent={Fuel} />,
   Froppy: <IconWrapper IconComponent={BabyIcon} />,
   Travel: <IconWrapper IconComponent={Plane} />,
+  HeartIcon: <IconWrapper IconComponent={HeartIcon} />,
 };
 
 export const DefaultCategoryIcon = <IconWrapper IconComponent={HomeIcon} />;
