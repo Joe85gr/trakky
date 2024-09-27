@@ -6,14 +6,23 @@ export async function getCategories() {
   return await prisma.category.findMany();
 }
 
-export async function addCategories(type: Category[]) {
-  const response = await prisma.category.createMany({
-    data: type,
-  });
+export async function addCategory(category: Category) {
+  console.log('type: ', category)
 
-  console.log(response);
+  try {
+    const response = await prisma.category.create({
+      data: {
+        iconId: category.iconId,
+        name: category.name
+      },
+    });
+  
+    console.log('response', response);
+    return response;
+  } catch(e) {
+    console.log("something went wrong", e);
+  }
 
-  return response;
 }
 
 export async function deleteCategories(ids: number[]) {

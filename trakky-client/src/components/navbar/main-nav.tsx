@@ -41,7 +41,7 @@ export function MainNav({ children }: HTMLAttributes<HTMLElement>) {
 
   const links: Links[] = [{ href: '/', label: 'Home' }];
 
-  if (user || demoMode || skipAuth) {
+  if (user || skipAuth) {
     links.push({ href: '/dashboards', label: 'Dashboards' });
     links.push({ href: '/overview', label: 'Overview' });
     links.push({ href: '/settings', label: 'Settings' });
@@ -108,7 +108,7 @@ export function MainNav({ children }: HTMLAttributes<HTMLElement>) {
               </div>
             </div>
             <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-              {(skipAuth || demoMode || !auth.isLoading) && (
+              {(skipAuth || !auth.isLoading) && (
                 <DropdownMenu>
                   <DropdownMenuTrigger className="text-sm font-medium text-muted-foreground transition-colors hover:text-slate-600 focus:outline-none">
                     {userName}

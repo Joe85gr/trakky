@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import { baseHandler } from "./base";
-import { addCategories, deleteCategories, getCategories } from "../infrastructure/categories";
-import { Type } from "@prisma/client";
+import { addCategory, deleteCategories, getCategories } from "../infrastructure/categories";
+import { Category } from "@prisma/client";
 
 
 export const categoriesRouter = express.Router();
@@ -11,9 +11,12 @@ categoriesRouter.get("/", (req: Request, res: Response) => {
 });
 
 categoriesRouter.post("/", (req: Request, res: Response) => {
-  const newValues = req.body as Type[];
+  console.log("saving categories..");
+  const newValues = req.body as Category;
 
-  return baseHandler(res, addCategories, newValues);
+  console.log('new values:', newValues);
+
+  return baseHandler(res, addCategory, newValues);
 });
 
 categoriesRouter.delete("/", (req: Request, res: Response) => {

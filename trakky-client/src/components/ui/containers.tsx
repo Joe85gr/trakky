@@ -1,4 +1,3 @@
-import { demoMode } from '@/constants';
 import { ReloadIcon } from '@radix-ui/react-icons';
 import { hasAuthParams, useAuth } from 'react-oidc-context';
 import { ReactNode, useEffect } from 'react';
@@ -18,7 +17,6 @@ export function ProtectedContainer({
   useEffect(() => {
     if (
       !skipAuth &&
-      !demoMode &&
       !hasAuthParams() &&
       !auth.isAuthenticated &&
       !auth.activeNavigator &&
@@ -29,7 +27,7 @@ export function ProtectedContainer({
   }, [auth]);
 
   const containerContent = () => {
-    if (demoMode || skipAuth) return children;
+    if (skipAuth) return children;
 
     if (auth.isLoading) {
       return <Login login={auth.signinRedirect} />;
