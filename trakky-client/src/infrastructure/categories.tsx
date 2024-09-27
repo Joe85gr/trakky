@@ -20,12 +20,10 @@ export async function GetCategories(signal?: AbortSignal) {
 }
 
 export async function AddCategory(category: Category): Promise<boolean> {
-  console.log('addCategories: categories', category);
   const config = makeBaseRequest(Endpoint.Categories, 'POST');
 
   config.data = baseRequestData(category);
 
-  console.log('config', config);
   const { data } = await baseApiCall<boolean>({ request: config });
 
   // TODO: return error as well and handle
