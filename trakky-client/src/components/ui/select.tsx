@@ -4,6 +4,7 @@ import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons';
 import * as SelectPrimitive from '@radix-ui/react-select';
 
 import { twMerge } from 'tailwind-merge';
+import { Dictionary } from './table/icons';
 
 const Select = SelectPrimitive.Root;
 
@@ -18,7 +19,7 @@ const SelectTrigger = React.forwardRef<
   <SelectPrimitive.Trigger
     ref={ref}
     className={twMerge(
-      'flex h-9 w-full items-center justify-between rounded-md border border-input bg-transparent px-2 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:opacity-50',
+      'flex h-9 w-full items-center justify-between rounded-md border border-input bg-transparent px-2 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:text-gray-700 disabled:border-gray-900',
       className
     )}
     {...props}
@@ -154,6 +155,48 @@ Selection.defaultProps = {
   placeholder: null,
 };
 
+function ChildrenSelection({
+  value,
+  onChange,
+  options,
+  placeholder,
+  ...props
+}: {
+  value?: string | null;
+  onChange: (e: string) => void;
+  options: Dictionary<JSX.Element>;
+  placeholder?: string;
+}) {
+  const defaultValue = value?.toString();
+
+  return (
+    <Select
+      defaultValue={defaultValue}
+      value={defaultValue}
+      onValueChange={onChange}
+      {...props}
+    >
+      <SelectTrigger className="w-full" {...props}>
+        <SelectValue placeholder={value} />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          {Object.keys(options).map((option) => (
+            <SelectItem key={option} value={option.toString()}>
+              {options[option]}
+            </SelectItem>
+          ))}
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+  );
+}
+
+ChildrenSelection.defaultProps = {
+  value: null,
+  placeholder: null,
+};
+
 export {
   Select,
   SelectGroup,
@@ -163,5 +206,6 @@ export {
   SelectLabel,
   SelectItem,
   SelectSeparator,
+  ChildrenSelection,
   Selection,
 };
