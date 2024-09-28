@@ -60,7 +60,6 @@ const DefaultCategoryIcon = <IconWrapper IconComponent={HomeIcon} />;
 const categoryIconMapping: Dictionary<string> = {};
 
 async function SetCategoryIconMapping() {
-
   const iconsResponse = await GetIcons();
   const categoriesResponse = await GetCategories();
 
@@ -78,11 +77,10 @@ export function GetCategoryIcon(
   show_default: boolean = true,
   className?: string
 ) {
-
-  if(Object.keys(categoryIconMapping).length === 0) {
+  if (Object.keys(categoryIconMapping).length === 0) {
     SetCategoryIconMapping().then(() => {});
   }
-  
+
   const match = CategoryIcon[categoryIconMapping[key]];
 
   if (match) {
