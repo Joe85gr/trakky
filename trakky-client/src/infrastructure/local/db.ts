@@ -5,7 +5,6 @@ import {
   mockPayments,
 } from '@/lib/makeData';
 import { Budget, Category, Owner, Payment } from '@/models/dtos';
-import 'fake-indexeddb/auto';
 import Dexie, { type EntityTable } from 'dexie';
 
 const db = new Dexie('trakky-demo') as Dexie & {
