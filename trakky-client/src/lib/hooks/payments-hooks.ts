@@ -17,7 +17,7 @@ export function usePaymentData() {
       )) as unknown as {
         data: Payment[];
         error: null | AppError;
-    };
+      };
       return payments;
     }
   );
