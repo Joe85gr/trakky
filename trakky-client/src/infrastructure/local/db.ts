@@ -1,4 +1,3 @@
-// db.ts
 import {
   mockBudgets,
   mockCategories,
@@ -6,7 +5,6 @@ import {
   mockPayments,
 } from '@/lib/makeData';
 import { Budget, Category, Owner, Payment } from '@/models/dtos';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import Dexie, { type EntityTable } from 'dexie';
 
 const db = new Dexie('trakky-demo') as Dexie & {
