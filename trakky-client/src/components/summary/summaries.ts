@@ -18,7 +18,8 @@ export function getAvailableYears(data: Payment[]) {
 
 function sortMap(map: Map<string, string[]>): Map<string, string[]> {
   // Convert map entries to an array and sort it
-  const sortedEntries = Array.from(map.entries()).sort(([a], [b]) => {
+  const sortedEntries = Array.from(map.entries())
+    .sort(([a], [b]) => {
       return a.localeCompare(b); // Sort by year (key)
     })
     .reverse();
