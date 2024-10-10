@@ -49,15 +49,15 @@ export default function CalculatedShareAccordion({
   useEffect(() => {
     const users: Dictionary<boolean> = {};
 
-    if (Object.keys(showUsers).length === 0) {
+    if (showUsers && Object.keys(showUsers).length === 0) {
       owners.forEach((owner) => {
         users[owner.name] = true;
       });
-    }
 
-    setShowUsers(users);
+      setShowUsers(users);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [owners]);
+  }, [owners, balances]);
 
   useEffect(() => {
     setUsersWithoutTransactions(owners.length !== Object.keys(balances).length);
@@ -167,10 +167,10 @@ export default function CalculatedShareAccordion({
                 })}
               </div>
             </div>
-            {share && !accordionIsDisabled && !usersWithoutTransactions && (
+            {share && !accordionIsDisabled && (
               <div className="flex flex-row gap-2 justify-start mx-1 my-4">
                 <span className="min-w-[90px] text-muted-foreground font-bold">
-                  Share Per Person:
+                  Share Per User:
                 </span>
                 <div className="flex flex-row align-middle gap-2 text-xs font-thin text-muted-foreground">
                   <AnimateNumber

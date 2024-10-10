@@ -31,6 +31,7 @@ db.on('populate', async () => {
 export const resetLocalDb = async () => {
   await db.delete();
   await db.open();
+
 };
 
 export default db;
