@@ -123,23 +123,22 @@ export function CustomTable<TData extends object>({
 
   return (
     <div>
-      <Table className="bg-slate-950 border border-slate-800 overflow-x-scroll">
+      <Table>
         <TableHeader className="hover:bg-transparent">
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id} className="border border-slate-800">
+            <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 const disableEditColumn = filtersOnly && header.id === 'edit';
                 return disableEditColumn ? null : (
                   <TableHead
-                    className="h-full border border-slate-800 text-center text-xs md:text-sm"
+                    className="h-full border border-primary-foreground text-center text-xs md:text-sm"
                     key={header.id}
                     {...{
                       colSpan: header.colSpan,
                       style: {
-                        backgroundColor: 'bg-slate-950',
                         width: colSize(header.id),
                         maxWidth: colSize(header.id),
-                        overflow: 'auto',
+                        overflow: 'hidden',
                       },
                     }}
                   >
@@ -179,12 +178,13 @@ export function CustomTable<TData extends object>({
                   key={row.id}
                   onClick={row.getToggleSelectedHandler()}
                   className={twMerge(
-                    'hover:bg-slate-800/50 border border-slate-800',
-                    row.getIsSelected() && 'bg-slate-600/50 hover:bg-slate-600'
+                    'hover:bg-muted-foreground/40 border overflow-x-scroll hover:animate-pulse',
+                    row.getIsSelected() &&
+                      'bg-muted-foreground/50 hover:bg-muted-foreground/40 hover:animate-none'
                   )}
                   {...{
                     style: {
-                      overflow: 'auto',
+                      overflowX: 'auto',
                     },
                   }}
                 >
