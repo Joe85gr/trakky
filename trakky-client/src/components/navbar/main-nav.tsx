@@ -99,7 +99,7 @@ export function MainNav({ children }: HTMLAttributes<HTMLElement>) {
                         key={link.href}
                         href={link.href}
                         className={twMerge(
-                          'rounded-md px-4 py-4 text-sm font-medium focus:outline-primary-foreground',
+                          'rounded-md px-4 py-4 text-sm font-medium transition-all focus:outline-primary-foreground',
                           window.location.pathname === link.href
                             ? 'bg-primary-foreground text-primary shadow shadow-primary-foreground'
                             : 'text-muted-foreground hover:bg-primary-foreground hover:text-primary'
@@ -153,7 +153,7 @@ export function MainNav({ children }: HTMLAttributes<HTMLElement>) {
                       rel="noreferrer"
                       aria-label="Source Code"
                     >
-                      <Github className="h-4 w-4" />
+                      <Github className="h-4 w-4 transition-all" />
                     </a>
                   </TooltipTrigger>
                   <TooltipContent className="bg-primary-foreground text-primary">
