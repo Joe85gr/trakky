@@ -32,7 +32,10 @@ function Dashboards({
             <ExpensesDashboard data={paymentOverviews} />
           </div>
           <div className="mt-4 md:mt-0" title="Users Dashboard">
-            <SubTitle title="Users Comparison" {...{ className: 'mb-4 ml-16' }} />
+            <SubTitle
+              title="Users Comparison"
+              {...{ className: 'mb-4 ml-16' }}
+            />
             <UsersDashboard data={ownersOverview} />
           </div>
         </div>

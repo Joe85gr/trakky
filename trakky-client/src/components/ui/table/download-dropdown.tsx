@@ -19,7 +19,7 @@ import {
 } from '@/components/ui/tooltip';
 import { downloadFile } from '@/lib/utils';
 import { Payment } from '@/models/dtos';
-import { ArrowDown, ArrowDownToLine } from 'lucide-react';
+import { ArrowDownToLine } from 'lucide-react';
 
 function RadioGroupFormat({ id, label }: { id: string; label: string }) {
   return (

@@ -23,7 +23,6 @@ import { StorageKey } from '@/constants';
 import { OwnerOverview } from '@/models/owner-overview';
 import { PaymentOverview } from '@/models/payment-overview';
 import AmountSummary from './amount-summary';
-import { Title } from '../ui/text';
 
 const colors = [
   '#0bb4ff',

@@ -26,7 +26,6 @@ import {
   ChevronsLeft,
   ChevronsRight,
   RotateCcw,
-  Wand,
 } from 'lucide-react';
 
 function TableNavigation<TData>({
