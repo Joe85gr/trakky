@@ -129,12 +129,12 @@ export default function CalculatedShareAccordion({
   }
 
   return (
-    <Accordion type="single" collapsible>
+    <Accordion type="single" collapsible className="mt-4">
       <AccordionItem value="item-1">
-        <AccordionTrigger className="justify-center gap-2 pb-2 text-sm bg-transparent text-muted-foreground">
+        <AccordionTrigger className="justify-center gap-2 pb-2 text-sm bg-transparent">
           Share Expenses
         </AccordionTrigger>
-        <AccordionContent className="pb-0">
+        <AccordionContent className="p-2 pb-1">
           <div>
             <div className="flex flex-row gap-2 justify-start mx-1 my-4">
               <span className="min-w-[100px] text-muted-foreground">
@@ -173,7 +173,7 @@ export default function CalculatedShareAccordion({
                 })}
               </div>
             </div>
-            {share && (
+            {share && !accordionIsDisabled && (
               <>
                 <div className="flex flex-row gap-2 justify-start mx-1 mt-4">
                   <span className="w-[100px] text-muted-foreground">

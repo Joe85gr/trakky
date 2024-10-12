@@ -51,8 +51,19 @@ module.exports = {
   			foreground: 'hsl(var(--foreground))',
   			primary: {
   				DEFAULT: 'hsl(var(--primary))',
-  				foreground: 'hsl(var(--primary-foreground))'
+  				foreground: 'hsl(var(--primary-foreground))',
   			},
+			text: {
+				primary: 'hsl(var(--primary-text))',
+			},
+			button: {
+				primary: 'hsl(var(--primary-button))',
+				foreground: 'hsl(var(--primary-button))',
+			},
+			select: {
+				primary: 'hsl(var(--primary-select))',
+				foreground: 'hsl(var(--primary-select))',
+			},
   			secondary: {
   				DEFAULT: 'hsl(var(--secondary))',
   				foreground: 'hsl(var(--secondary-foreground))'
