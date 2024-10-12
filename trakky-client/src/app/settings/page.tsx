@@ -1,6 +1,6 @@
 import { useEffect, useReducer, useState } from 'react';
 import { CustomSmallTable, CustomTable } from '@/components/ui/table/table';
-import { SubTitle, Title } from '@/components/ui/text';
+import { SubTitle } from '@/components/ui/text';
 import { onTransactionsUpload, useBudgetsTable } from '@/lib/hooks/table-hooks';
 import { FadeLeft, FadeUp } from '@/components/ui/animations/fade';
 import { downloadFile } from '@/lib/utils';

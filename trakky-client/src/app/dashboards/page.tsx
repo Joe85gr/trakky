@@ -1,5 +1,5 @@
 import { CustomTable } from '@/components/ui/table/table';
-import { SubTitle, Title } from '@/components/ui/text';
+import { SubTitle } from '@/components/ui/text';
 import {
   usePaymentData,
   useFilteredPayments,

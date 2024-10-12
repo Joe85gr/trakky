@@ -1,4 +1,3 @@
-import { Title } from '@/components/ui/text';
 import YearSelection from '@/components/ui/data-selector';
 import { usePaymentsTable } from '@/lib/hooks/table-hooks';
 import { Containers } from '@/components/ui/containers';

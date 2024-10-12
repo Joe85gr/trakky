@@ -59,6 +59,7 @@ module.exports = {
 			button: {
 				primary: 'hsl(var(--primary-button))',
 				foreground: 'hsl(var(--primary-button))',
+				checkbox: 'hsl(var(--primary-checkbox))'
 			},
 			select: {
 				primary: 'hsl(var(--primary-select))',
