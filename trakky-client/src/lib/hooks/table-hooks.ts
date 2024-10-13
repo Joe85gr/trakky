@@ -27,6 +27,7 @@ import { Budget, Payment } from '@/models/dtos';
 import { Total } from '@/models/total';
 import { monthNameToNumber } from '@/lib/text-formatter';
 import { Client } from '@/infrastructure/client-injector';
+import { delay } from '../utils';
 
 export function usePaymentsTable({
   data,
@@ -162,7 +163,8 @@ export function usePaymentsTable({
       table.resetRowSelection();
     }
 
-    refreshData();
+    await delay(() => {}, 1000);
+    window.location.reload();
   }
 
   function onEdited() {

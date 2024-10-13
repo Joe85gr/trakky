@@ -17,7 +17,7 @@ function PaymentsRecap({
       <tbody className={limitedSpace ? 'max-h-[130px]' : ''}>
         {entries.map((payment: Payment) => (
           <TableRow
-            key={`${payment.id}-recap-row`}
+            key={`${payment.id}-${payment.owner}-recap-row`}
             className={twMerge(
               'flex max-w-[460px] ',
               payment.amount < 0 ? 'text-red-300' : 'text-green-300'

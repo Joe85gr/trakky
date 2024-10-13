@@ -2,7 +2,7 @@ interface Balance {
   amount: number;
 }
 
-interface OwedBalance extends Balance {
+export interface OwedBalance extends Balance {
   to: string;
 }
 
