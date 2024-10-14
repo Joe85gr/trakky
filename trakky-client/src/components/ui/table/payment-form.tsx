@@ -279,7 +279,7 @@ export function PaymentForm({
                           {field.value ? (
                             format(field.value, 'PPP')
                           ) : (
-                            <span>Pick a date</span>
+                            <span>Select a date</span>
                           )}
                         </Button>
                       </PopoverTrigger>

@@ -73,7 +73,7 @@ function DeleteDialog({
             </AlertDialogContent>
           </AlertDialog>
         </TooltipTrigger>
-        <TooltipContent className="bg-red-500/50 text-primary">
+        <TooltipContent className="bg-red-950 text-primary">
           {tooltipText}
         </TooltipContent>
       </Tooltip>

@@ -32,6 +32,8 @@ export const getDebitorBalances = (balances: Dictionary<number>) => {
     }
   });
 
+  let index = 0;
+
   for (const debitor in debitors) {
     const debitorBalance: DebitorBalance = { name: debitor, owed: [] };
 
@@ -49,7 +51,12 @@ export const getDebitorBalances = (balances: Dictionary<number>) => {
       debitors[debitor] -= debitPaid;
 
       if (debitPaid > 0) {
-        debitorBalance.owed.push({ to: creditor, amount: debitPaid });
+        index += 1;
+        debitorBalance.owed.push({
+          to: creditor,
+          amount: debitPaid,
+          id: index,
+        });
       }
 
       if (debitPaid === debitors[debitor]) {

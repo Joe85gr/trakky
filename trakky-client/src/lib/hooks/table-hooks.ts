@@ -27,7 +27,6 @@ import { Budget, Payment } from '@/models/dtos';
 import { Total } from '@/models/total';
 import { monthNameToNumber } from '@/lib/text-formatter';
 import { Client } from '@/infrastructure/client-injector';
-import { delay } from '../utils';
 
 export function usePaymentsTable({
   data,
@@ -143,7 +142,6 @@ export function usePaymentsTable({
     const deleted = await Client.Delete(Endpoint.Payments, ids, signal);
 
     if (deleted) {
-      refreshData();
       table.resetRowSelection();
       toast({
         title: 'Transactions deleted!',
@@ -155,6 +153,8 @@ export function usePaymentsTable({
         className: 'bg-red-500',
       });
     }
+
+    refreshData();
   }
 
   async function onRefresh(resetFilters: boolean = true) {
@@ -163,8 +163,7 @@ export function usePaymentsTable({
       table.resetRowSelection();
     }
 
-    await delay(() => {}, 1000);
-    window.location.reload();
+    refreshData();
   }
 
   function onEdited() {

@@ -3,6 +3,7 @@ interface Balance {
 }
 
 export interface OwedBalance extends Balance {
+  id: number;
   to: string;
 }
 

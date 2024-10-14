@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-no-bind */
 import {
   Accordion,
   AccordionContent,
@@ -13,6 +12,7 @@ import { Share } from '@/models/share';
 import getDebitorBalances from '@/lib/calculators';
 import { formatAmount } from '@/lib/text-formatter';
 import { twMerge } from 'tailwind-merge';
+import { DebitorBalance, OwedBalance } from '@/models/debitor-balance';
 import { AnimateNumber } from './summary';
 import { Dictionary } from '../ui/table/icons';
 import { Button } from '../ui/button';
@@ -21,10 +21,12 @@ import DebitOverview from './debit-overview';
 
 interface CalculatedShareAccordionProps {
   balances: Dictionary<number>;
+  onRefresh: () => void;
 }
 
 export default function CalculatedShareAccordion({
   balances,
+  onRefresh,
 }: CalculatedShareAccordionProps) {
   const [share, setShare] = useState<Share>();
   const [accordionIsDisabled, setAccordionIsDisabled] = useState<boolean>(true);
@@ -82,28 +84,36 @@ export default function CalculatedShareAccordion({
     setShare(getDebitorBalances(newBalances));
   }, [balances, owners, checkBoxStates]);
 
-  async function onConfirm() {
-    const newBalances: Dictionary<number> = {};
+  async function onConfirm(id: number) {
+    if (!share) return;
 
-    if (checkBoxStates.All) {
-      Object.keys(balances).forEach((balance) => {
-        newBalances[balance] = balances[balance];
-      });
+    const newBalances: DebitorBalance[] = [];
 
-      owners.forEach((owner) => {
-        if (!(owner.name in balances)) {
-          newBalances[owner.name] = 0;
+    share.debitorBalances.forEach((debitor) => {
+      const newBalance: OwedBalance[] = [];
+      debitor.owed.forEach((owed) => {
+        if (owed.id !== id) {
+          newBalance.push(owed);
         }
       });
-    } else {
-      Object.keys(checkBoxStates).forEach((user) => {
-        if (checkBoxStates[user] === true) {
-          newBalances[user] = balances[user] ?? 0;
-        }
-      });
-    }
 
-    setShare(getDebitorBalances(newBalances));
+      if (newBalance.length > 0) {
+        newBalances.push({
+          owed: newBalance,
+          name: debitor.name,
+        });
+      }
+    });
+
+    const newShare: Share = {
+      totalAmount: share.totalAmount,
+      shareAmount: share.shareAmount,
+      debitorBalances: newBalances,
+    };
+
+    setShare(newShare);
+
+    onRefresh();
   }
 
   async function setAllCheckBoxes() {
@@ -258,7 +268,7 @@ export default function CalculatedShareAccordion({
                   >
                     <PayDebitDialog
                       owed={owed}
-                      onConfirm={onConfirm}
+                      onConfirm={() => onConfirm(owed.id)}
                       debitorName={debitor.name}
                       tooltipText="Clear Debit"
                       className={twMerge(

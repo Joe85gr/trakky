@@ -173,14 +173,19 @@ const TableActionMenu = memo(
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger
-                          disabled={noData}
+                          disabled={
+                            noData ||
+                            (table.getPreFilteredRowModel().rows.length ===
+                              table.getFilteredRowModel().rows.length &&
+                              !table.getIsSomeRowsSelected())
+                          }
                           onClick={() => onRefresh(true)}
                           className="rounded px-2 text-yellow-500 flex justify-center hover:text-yellow-800 disabled:text-muted  items-center focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring "
                         >
                           <RotateCcw />
                         </TooltipTrigger>
                         <TooltipContent className="bg-secondary text-primary">
-                          Refresh
+                          Clear filters and selection
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>

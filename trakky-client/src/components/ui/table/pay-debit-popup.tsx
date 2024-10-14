@@ -59,7 +59,7 @@ function PayDebitDialog({
       type: 'General',
       owner: owed.to,
       description: 'Expenses Share',
-      date: localDate ?? new Date().toLocaleDateString(),
+      date: localDate ?? '',
     });
 
     payments.push({
@@ -67,7 +67,7 @@ function PayDebitDialog({
       type: 'General',
       owner: debitorName,
       description: 'Expenses Share',
-      date: localDate ?? new Date().toLocaleDateString(),
+      date: localDate ?? '',
     });
 
     setEntries(payments);
@@ -82,14 +82,12 @@ function PayDebitDialog({
       return;
     }
 
-    onConfirm();
-
     resultToast({
       isError: isError ?? false,
       message: 'Transaction saved',
     });
 
-    onConfirm();
+    await onConfirm();
   }
 
   return (
@@ -108,7 +106,7 @@ function PayDebitDialog({
               </div>
             </AlertDialogTrigger>
             <AlertDialogContent className="h-[400px] overflow-auto ">
-              <AlertDialogHeader>
+              <AlertDialogHeader className="justify-center">
                 <div className="sticky top-0 z-40">
                   <AlertDialogTitle>
                     <div className="text-center">Clear debit?</div>
@@ -118,11 +116,10 @@ function PayDebitDialog({
                         <PopoverTrigger asChild>
                           <Button variant="outline">
                             <CalendarIcon className="mr-2 h-4 w-4" />
-
                             {date ? (
                               format(date, 'PPP')
                             ) : (
-                              <span>Pick a date</span>
+                              <span>Select a date</span>
                             )}
                           </Button>
                         </PopoverTrigger>
@@ -137,21 +134,27 @@ function PayDebitDialog({
                         </PopoverContent>
                       </Popover>
                     </div>
-                    <p className="text-sm mb-2 text-muted-foreground pb-2">
+                    <p
+                      className={twMerge(
+                        'text-sm mb-2 text-muted-foreground pb-2',
+                        !date && 'text-yellow-500 pt-5 text-center'
+                      )}
+                    >
                       {date
                         ? 'This will create the below entries:'
                         : 'Select the date to create the new entries for.'}
                     </p>
                   </AlertDialogTitle>
+                  {entries && <PaymentsRecap entries={entries} />}
                 </div>
-                {entries && date && (
-                  <div className="text-sm">
-                    <PaymentsRecap entries={entries} />
-                  </div>
-                )}
               </AlertDialogHeader>
               <AlertDialogFooter className="z-10">
-                <AlertDialogCancel className="mx-6 mb-6">
+                <AlertDialogCancel
+                  className="mx-6 mb-6"
+                  onClick={() => {
+                    setDate(undefined);
+                  }}
+                >
                   Cancel
                 </AlertDialogCancel>
                 {date && (
