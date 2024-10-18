@@ -8,8 +8,11 @@ import { usePaymentData, useYearSelection } from '@/lib/hooks/payments-hooks';
 import CalculatedShareAccordion from '@/components/summary/calculated-share';
 import { SubTitle } from '@/components/ui/text';
 import { CustomTable } from '@/components/ui/table/table';
+import { monthNameToNumber } from '@/lib/text-formatter';
+import { useEffect, useState } from 'react';
 
 export default function SharePage() {
+  const [date, setDate] = useState<Date | null>(null);
   const { data: payments, refreshData, isLoading, isError } = usePaymentData();
 
   const {
@@ -33,34 +36,54 @@ export default function SharePage() {
 
   const { balances } = useSummary(table, selectedYear);
 
+  useEffect(() => {
+    if (selectedYear === 'All Years' || selectedMonth === 'All Months') {
+      setDate(null);
+    } else {
+      setDate(
+        new Date(
+          `${selectedYear}/${monthNameToNumber(selectedMonth ?? 'January')}/01`
+        )
+      );
+    }
+  }, [selectedMonth, selectedYear]);
+
   return (
     <Loading loading={isLoading}>
-      <div className="mt-12 text-center" aria-label="Filters">
-        <SubTitle title="Filters" />
-        {!isError && (
-          <div className="my-1">
-            <YearSelection
-              availableYears={availableYears}
-              selectedYear={selectedYear}
-              onYearChange={setSelectedYear}
-              onMonthChange={setSelectedMonth}
-              selectedMonth={selectedMonth}
-            />
+      <div className="flex justify-center mx-1">
+        <div className="w-full md:w-[800px]">
+          <div className="mt-12 text-center" aria-label="Filters">
+            <SubTitle title="Filters" />
+            {!isError && (
+              <div className="my-1">
+                <YearSelection
+                  availableYears={availableYears}
+                  selectedYear={selectedYear}
+                  onYearChange={setSelectedYear}
+                  onMonthChange={setSelectedMonth}
+                  selectedMonth={selectedMonth}
+                />
+              </div>
+            )}
+            <CustomTable table={table} filtersOnly page="dashboard" />
           </div>
-        )}
-        <CustomTable table={table} filtersOnly page="dashboard" />
+          <div />
+          <FadeUp>
+            <Containers className="mt-12">
+              {balances && (
+                <CalculatedShareAccordion
+                  balances={balances}
+                  onRefresh={onRefresh}
+                  date={date}
+                  showPayDebitButton={
+                    selectedMonth !== null && selectedMonth !== 'All Months'
+                  }
+                />
+              )}
+            </Containers>
+          </FadeUp>
+        </div>
       </div>
-      <div />
-      <FadeUp>
-        <Containers className="mt-12">
-          {balances && (
-            <CalculatedShareAccordion
-              balances={balances}
-              onRefresh={onRefresh}
-            />
-          )}
-        </Containers>
-      </FadeUp>
     </Loading>
   );
 }

@@ -3,7 +3,8 @@
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Form } from '@/components/ui/form';
+import { Form, FormField, Field } from '@/components/ui/form';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -11,6 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { twMerge } from 'tailwind-merge';
 import { useEffect, useReducer, useState } from 'react';
 import { Client } from '@/infrastructure/client-injector';
 import { resultToast } from '@/components/ui/use-toast';
@@ -21,14 +23,22 @@ import {
 } from '@/components/ui/table/payment-form-reducer';
 import { ErrorMessage } from '@/infrastructure/remote/base';
 import { errorMessage } from '@/components/ui/table/form-error-message';
-import { Category, Owner, Payment } from '@/models/dtos';
+import {
+  Category,
+  Owner,
+  Payment,
+  PaymentToShare,
+  SharedExpenses,
+} from '@/models/dtos';
 import PaymentsRecap from '@/components/payments/payments-recap';
 import { Endpoint } from '@/constants';
 import Loading from '../loading';
+import { Dictionary } from './icons';
 import {
   CalendarField,
   NumericField,
   SelectionField,
+  SwitchField,
   TextInputField,
 } from './form-fields';
 
@@ -68,11 +78,16 @@ export function PaymentForm({
   const [amountIsNegative, setAmountIsNegative] = useState(
     editValues ? editValues.amount < 0 : false
   );
+  const [shareSwitchIsHidden, setShareSwitchIsHidden] =
+    useState<boolean>(false);
+  const [showUserButtons, setShowUserButtons] = useState<boolean>(false);
   const [fetchState, dispatchFetch] = useReducer(
     paymentFormDataReducer,
     FETCH_INITIAL_STATE
   );
   const [isError, setIsError] = useState(false);
+  const [checkBoxStates, setCheckboxStates] = useState<Dictionary<boolean>>({});
+  const [owners, setOwners] = useState<Owner[]>();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -106,6 +121,7 @@ export function PaymentForm({
         return;
       }
       const ownersData = data as Owner[];
+      setOwners(ownersData);
       const fetchedOwners = ownersData.map((owner) => owner.name);
       fetchedOwners.push('Shared');
 
@@ -132,6 +148,22 @@ export function PaymentForm({
       dispatchFetch({
         type: FetchActionType.FETCHED_CATEGORIES,
         payload: fetchedCategories,
+      });
+
+      const { data: sharedExpenses, error: sharedExpensesError } =
+        await Client.Get(Endpoint.SharedExpenses, signal);
+      if (sharedExpensesError) {
+        dispatchFetch({
+          type: FetchActionType.FETCH_ERROR,
+          payload: sharedExpensesError.error,
+        });
+      }
+
+      const sharedExpensesData = sharedExpenses as SharedExpenses[];
+
+      dispatchFetch({
+        type: FetchActionType.FETCHED_SHARED_EXPENSES,
+        payload: sharedExpensesData,
       });
     };
 
@@ -168,10 +200,73 @@ export function PaymentForm({
       );
   };
 
+  function allCheckboxesAreOn(
+    dictionary: Dictionary<boolean>,
+    newState: boolean
+  ) {
+    return (
+      newState === true && Object.values(dictionary).every((e) => e === true)
+    );
+  }
+
+  async function setAllCheckBoxes(newState: boolean) {
+    const users: Dictionary<boolean> = {};
+
+    Object.keys(checkBoxStates).forEach((user) => {
+      users[user] = newState;
+    });
+
+    setCheckboxStates(users);
+  }
+
+  async function setCheckBox(key: string, state?: boolean) {
+    const users: Dictionary<boolean> = { All: false };
+
+    owners?.forEach((user) => {
+      users[user.name] = checkBoxStates[user.name];
+    });
+
+    const newState = state ?? !users[key];
+
+    users[key] = newState;
+
+    const usersState: Dictionary<boolean> = {};
+
+    Object.keys(users).forEach((user) => {
+      if (user !== 'All') {
+        usersState[user] = users[user];
+      }
+    });
+
+    if (allCheckboxesAreOn(usersState, newState)) {
+      users.All = true;
+    } else {
+      users.All = false;
+    }
+
+    setCheckboxStates(users);
+  }
+
+  const checkboxStyle = (isChecked: boolean) =>
+    twMerge(
+      'text-base font-normal h-9 transition-colors duration-300',
+      isChecked
+        ? 'bg-button-checkbox hover:bg-button-checkbox text-primary hover:text-primary hover:font-bold'
+        : 'bg-background hover:bg-background text-muted-foreground/50 hover:text-muted-foreground'
+    );
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsError(false);
 
-    const payment = values as unknown as Payment;
+    const paymentToShare = values as unknown as PaymentToShare;
+
+    const payment: Payment = {
+      owner: paymentToShare.owner,
+      date: paymentToShare.date,
+      description: paymentToShare.description,
+      amount: paymentToShare.amount,
+      type: paymentToShare.type,
+    };
 
     if (amountIsNegative) {
       payment.amount = -Math.abs(form.getValues('amount'));
@@ -197,18 +292,43 @@ export function PaymentForm({
       payments = [payment];
     }
 
+    const saveSharedExpenses = async (data: string | number) => {
+      const shared: SharedExpenses[] = [];
+
+      console.log('checkBoxStates', checkBoxStates);
+
+      Object.keys(checkBoxStates).forEach((user) => {
+        if (user !== 'All' && checkBoxStates[user] === true) {
+          const paymentId = payment.id ?? data;
+          const ownerId = owners?.filter((owner) => owner.name === user)[0].id;
+          shared.push({
+            PaymentId: Number(paymentId),
+            OwnerId: Number(ownerId),
+            Complete: false,
+          });
+        }
+      });
+
+      await Client.Post(Endpoint.SharedExpenses, shared);
+    };
+
     if (isNewPayment || payment.owner === 'Shared') {
       const { data, error } = await Client.Post(Endpoint.Payments, payments);
+      console.log('data', data);
       if (error || !data) {
         errorMessage(setIsError, error?.error);
         return;
       }
+
+      await saveSharedExpenses(data);
     } else {
       const { data, error } = await Client.Put(Endpoint.Payments, payment);
       if (error || !data) {
         errorMessage(setIsError, error?.error);
         return;
       }
+
+      await saveSharedExpenses(data);
     }
     setAddedPayments(addedPayments.concat(payments));
 
@@ -244,7 +364,13 @@ export function PaymentForm({
               <CalendarField form={form} name="date" title="Date" />
             </div>
             <div className="flex flex-row">
-              <div className="w-[100%] justify-center transition-all duration-200 ease-out">
+              <div
+                className={twMerge(
+                  shareSwitchIsHidden && 'w-[100%]',
+                  !shareSwitchIsHidden && 'w-[70%]',
+                  'justify-center transition-all duration-200 ease-out'
+                )}
+              >
                 <NumericField
                   form={form}
                   name="amount"
@@ -253,13 +379,76 @@ export function PaymentForm({
                   amountIsNegative={amountIsNegative}
                 />
               </div>
+              <div
+                className={twMerge(
+                  shareSwitchIsHidden && 'hidden',
+                  'w-[30%] justify-center'
+                )}
+              >
+                <SwitchField
+                  form={form}
+                  name="toShare"
+                  title="To Share"
+                  onChange={(e) => {
+                    setShowUserButtons(e === true);
+                    setAllCheckBoxes(false);
+                  }}
+                />
+              </div>
             </div>
+            {showUserButtons && (
+              <FormField
+                control={form.control}
+                name="toShare"
+                render={({ field }) => (
+                  <Field name="Share between">
+                    <div className="flex flex-row flex-wrap align-middle gap-2">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className={checkboxStyle(checkBoxStates.All)}
+                        onClick={() => {
+                          setAllCheckBoxes(!checkBoxStates.All);
+                        }}
+                      >
+                        All
+                      </Button>
+                      {fetchState.owners
+                        .filter((owner: string) => owner !== 'Shared')
+                        .map((owner: string) => {
+                          return (
+                            <Button
+                              type="button"
+                              key={owner}
+                              variant="outline"
+                              className={checkboxStyle(checkBoxStates[owner])}
+                              onClick={() => {
+                                setCheckBox(owner);
+                              }}
+                            >
+                              {owner}
+                            </Button>
+                          );
+                        })}
+                    </div>
+                  </Field>
+                )}
+              />
+            )}
             <div className="grid grid-cols-2 gap-2">
               <SelectionField
                 name="owner"
                 title="Owner"
                 form={form}
                 options={fetchState.owners}
+                onChange={(e) => {
+                  const isShared = e === 'Shared';
+                  setShareSwitchIsHidden(isShared);
+                  if (isShared) {
+                    setShowUserButtons(false);
+                    form.setValue('toShare', false);
+                  }
+                }}
               />
               <SelectionField
                 name="type"

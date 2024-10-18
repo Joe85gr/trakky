@@ -48,7 +48,7 @@ export default function App() {
         />
       </Containers>
       {!isError && (
-        <div className="sticky top-12 sm:top-24 z-30 mx-2 sm:mx-0">
+        <div className="mx-1 sm:mx-0">
           <YearSelection
             availableYears={availableYears}
             selectedYear={selectedYear}

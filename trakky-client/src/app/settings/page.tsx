@@ -227,7 +227,7 @@ function SettingsPage() {
     });
   };
 
-  async function DownloadBackup() {
+  const DownloadBackup = async () => {
     const defaultError = "Couldn't download backup!";
 
     try {
@@ -241,7 +241,7 @@ function SettingsPage() {
     } catch (e) {
       errorToast(defaultError);
     }
-  }
+  };
 
   return (
     <Loading loading={fetchState.loading}>
@@ -250,18 +250,14 @@ function SettingsPage() {
           <SubTitle title="Backup" {...{ className: 'text-center mt-4' }} />
           <div className="flex flex-row gap-2">
             <Button
-              variant="outline"
-              className="w-full h-10 text-base sm:text-xs sm:font-light "
-              onClick={() => DownloadBackup()}
+              variant="outline_variant"
+              className="h-10"
+              onClick={DownloadBackup}
               disabled={fetchState.error !== null}
             >
               Download Backup
             </Button>
-            <Button
-              variant="outline"
-              className="w-full h-10 text-base sm:text-xs sm:font-light"
-              disabled
-            >
+            <Button variant="outline_variant" className="h-10" disabled>
               Upload Backup
             </Button>
           </div>
