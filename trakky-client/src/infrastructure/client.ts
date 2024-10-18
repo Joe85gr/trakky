@@ -14,7 +14,7 @@ export default abstract class BaseClient {
     data: unknown,
     signal?: AbortSignal
   ): Promise<{
-    data: string | number;
+    data: boolean;
     error: null | AppError;
   }>;
 
@@ -29,7 +29,7 @@ export default abstract class BaseClient {
     data: unknown,
     signal?: AbortSignal
   ): Promise<{
-    data: string | number;
+    data: boolean;
     error: null | AppError;
   }>;
 

@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable react/prop-types */
 import * as React from 'react';
 import * as SwitchPrimitives from '@radix-ui/react-switch';
