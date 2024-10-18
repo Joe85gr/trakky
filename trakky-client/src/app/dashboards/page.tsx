@@ -10,6 +10,7 @@ import { usePaymentsTable } from '@/lib/hooks/table-hooks';
 import { FadeLeft, FadeUp } from '@/components/ui/animations/fade';
 import useDashboard from '@/lib/hooks/use-dashboard';
 import Loading from '@/components/ui/loading';
+import { PageContainer } from '@/components/ui/containers';
 import Dashboards from './components/dashboards';
 
 function DashboardPage() {
@@ -43,7 +44,7 @@ function DashboardPage() {
 
   return (
     <Loading loading={isLoading}>
-      <div className="mx-1">
+      <PageContainer>
         <FadeLeft>
           <div className="mt-6 text-center" aria-label="Filters">
             <SubTitle title="Filters" />
@@ -68,7 +69,7 @@ function DashboardPage() {
             expensesBreakdown={expensesBreakdown}
           />
         </FadeUp>
-      </div>
+      </PageContainer>
     </Loading>
   );
 }

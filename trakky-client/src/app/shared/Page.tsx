@@ -1,6 +1,5 @@
 import YearSelection from '@/components/ui/data-selector';
 import { usePaymentsTable } from '@/lib/hooks/table-hooks';
-import { Containers } from '@/components/ui/containers';
 import { FadeUp } from '@/components/ui/animations/fade';
 import useSummary from '@/lib/hooks/use-summary';
 import Loading from '@/components/ui/loading';
@@ -10,6 +9,7 @@ import { SubTitle } from '@/components/ui/text';
 import { CustomTable } from '@/components/ui/table/table';
 import { monthNameToNumber } from '@/lib/text-formatter';
 import { useEffect, useState } from 'react';
+import { PageContainer } from '@/components/ui/containers';
 
 export default function SharePage() {
   const [date, setDate] = useState<Date | null>(null);
@@ -50,40 +50,36 @@ export default function SharePage() {
 
   return (
     <Loading loading={isLoading}>
-      <div className="flex justify-center mx-1">
-        <div className="w-full md:w-[800px]">
-          <div className="mt-12 text-center" aria-label="Filters">
-            <SubTitle title="Filters" />
-            {!isError && (
-              <div className="my-1">
-                <YearSelection
-                  availableYears={availableYears}
-                  selectedYear={selectedYear}
-                  onYearChange={setSelectedYear}
-                  onMonthChange={setSelectedMonth}
-                  selectedMonth={selectedMonth}
-                />
-              </div>
-            )}
-            <CustomTable table={table} filtersOnly page="dashboard" />
-          </div>
-          <div />
-          <FadeUp>
-            <Containers className="mt-12">
-              {balances && (
-                <CalculatedShareAccordion
-                  balances={balances}
-                  onRefresh={onRefresh}
-                  date={date}
-                  showPayDebitButton={
-                    selectedMonth !== null && selectedMonth !== 'All Months'
-                  }
-                />
-              )}
-            </Containers>
-          </FadeUp>
+      <PageContainer>
+        <div className="mt-12 text-center" aria-label="Filters">
+          <SubTitle title="Filters" />
+          {!isError && (
+            <div className="my-1">
+              <YearSelection
+                availableYears={availableYears}
+                selectedYear={selectedYear}
+                onYearChange={setSelectedYear}
+                onMonthChange={setSelectedMonth}
+                selectedMonth={selectedMonth}
+              />
+            </div>
+          )}
+          <CustomTable table={table} filtersOnly page="dashboard" />
         </div>
-      </div>
+        <div />
+        <FadeUp>
+          {balances && (
+            <CalculatedShareAccordion
+              balances={balances}
+              onRefresh={onRefresh}
+              date={date}
+              showPayDebitButton={
+                selectedMonth !== null && selectedMonth !== 'All Months'
+              }
+            />
+          )}
+        </FadeUp>
+      </PageContainer>
     </Loading>
   );
 }

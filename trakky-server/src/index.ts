@@ -38,7 +38,7 @@ app.use("/api", apiRouter);
 
 apiRouter.use("/backup", openIdAuth, backupRouter);
 apiRouter.use("/payments", openIdAuth, paymentsRouter);
-apiRouter.use("/shared", openIdAuth, sharedExpensesRouter);
+apiRouter.use("/sharedExpenses", openIdAuth, sharedExpensesRouter);
 apiRouter.use("/budgets", openIdAuth, budgetsRouter);
 apiRouter.use("/owners", openIdAuth, ownersRouter)
 apiRouter.use("/types", openIdAuth, typesRouter)
