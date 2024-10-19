@@ -16,7 +16,7 @@ import { Dictionary } from '@/components/ui/table/icons';
 import { ColumnFilter } from '@tanstack/react-table';
 import { SingleButtonFilter, MultyButtonFilters } from './components/filters';
 
-export default function SharePage() {
+export default function SplitPage() {
   const [date, setDate] = useState<Date | null>(null);
   const [owners, setOwners] = useState<Owner[]>([]);
   const [selectedUsers, setSelectedUsers] = useState<Dictionary<boolean>>({});
@@ -103,8 +103,8 @@ export default function SharePage() {
   return (
     <Loading loading={isLoading}>
       <PageContainer>
-        <div className="mt-12 text-center" aria-label="Filters">
-          <SubTitle title="Filters" />
+        <div className="mt-12 text-center" aria-label="Split">
+          <SubTitle title="Split Payments" />
           {!isError && (
             <div className="my-1">
               <YearSelection
@@ -118,7 +118,7 @@ export default function SharePage() {
           )}
           <div>
             <MultyButtonFilters
-              title="Share Amongst:"
+              title="Split Between:"
               checkBoxStates={selectedUsers}
               setCheckboxStates={setSelectedUsers}
               entries={owners.map((owner) => owner.name)}
@@ -126,7 +126,7 @@ export default function SharePage() {
           </div>
           <div>
             <SingleButtonFilter
-              title="Filter Categories:"
+              title="For Categories:"
               checkBoxStates={selectedCategories}
               setCheckboxStates={setSelectedCategories}
               entries={Array.from(

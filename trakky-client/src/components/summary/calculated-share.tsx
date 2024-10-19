@@ -198,9 +198,11 @@ export default function CalculatedShareAccordion({
           );
         });
       })}
-      {!showPayDebitButton && (
+      {(!showPayDebitButton ||
+        !selectedCategory ||
+        selectedCategory === 'All') && (
         <div className="flex flex-row mt-2 mx-1 justify-center text-accent">
-          Select month to clear debits for
+          Select valid month and category to clear debits
         </div>
       )}
     </div>
