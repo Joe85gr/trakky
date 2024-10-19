@@ -23,6 +23,7 @@ export default function SharePage() {
   const [selectedCategories, setSelectedCategories] = useState<
     Dictionary<boolean>
   >({});
+  const [currentCategory, setCurrentCategory] = useState<string>('All');
   const { data: payments, refreshData, isLoading, isError } = usePaymentData();
 
   const {
@@ -45,6 +46,16 @@ export default function SharePage() {
   });
 
   const { balances } = useSummary(table, selectedYear);
+
+  function onDebitCleared() {
+    onRefresh().then(() => {
+      const filters: ColumnFilter[] = [];
+
+      filters.push({ id: 'type', value: currentCategory });
+
+      table.setColumnFilters(filters);
+    });
+  }
 
   useEffect(() => {
     const controller = new AbortController();
@@ -80,6 +91,14 @@ export default function SharePage() {
 
     table.setColumnFilters(filters);
   }, [selectedCategories, table]);
+
+  useEffect(() => {
+    setCurrentCategory(
+      Object.keys(selectedCategories).filter(
+        (category) => selectedCategories[category] === true
+      )[0] as unknown as string
+    );
+  }, [selectedCategories]);
 
   return (
     <Loading loading={isLoading}>
@@ -120,10 +139,11 @@ export default function SharePage() {
         <FadeUp>
           {balances && (
             <CalculatedShareAccordion
+              selectedCategory={currentCategory}
               checkBoxStates={selectedUsers}
               setCheckboxStates={setSelectedUsers}
               balances={balances}
-              onRefresh={onRefresh}
+              onDebitCleared={() => onDebitCleared()}
               date={date}
               showPayDebitButton={
                 selectedMonth !== null && selectedMonth !== 'All Months'
